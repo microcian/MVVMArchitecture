@@ -27,8 +27,6 @@ cache.properties.lock
 .idea/workspace.xml
 *.iws
 
-gradle/
-
 app/build/
 CameraView/build/
 demoKotlin/build/
