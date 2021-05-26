@@ -1,5 +1,21 @@
 <resources>
-    <string name="app_name">Imagine</string>
+    <string name="app_name" translatable="false">BoilerPlateMVVM</string>
+
+    <string name="session_expired">Session expired!</string>
+    <string name="no_internet_connectivity">No internet connectivity!</string>
+    <string name="please_confirm">Please Confirm</string>
+    <string name="okay">Okay</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="random_users">Random Users</string>
+    <string name="user_detail">User Detail</string>
+    <string name="settings">Settings</string>
+    <string name="theme">Theme</string>
+    <string name="dark">Dark</string>
+    <string name="light">Light</string>
+    <string name="system_default">System default</string>
+    <string name="language">Language</string>
+    <string name="languages">Languages</string>
 
     <!-- Screen Titles -->
     <string name="screen_home_title_str">Home</string>
@@ -16,5 +32,4 @@
     <string name="message_no_network_connected_str">No network connected!</string>
     <string name="message_something_went_wrong_str">Something went wrong!</string>
     <string name="message_search_results_for_str">Search results for %1s</string>
-
 </resources>

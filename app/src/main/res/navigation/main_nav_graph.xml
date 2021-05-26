@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.wajahatkarim3.imagine.ui.home.HomeFragment"
+        android:name="com.abe.boilerplatemvvm.view.main.photos.PhotosFragment"
         android:label="@string/screen_home_title_str"
-        tools:layout="@layout/home_fragment" >
+        tools:layout="@layout/photos_fragment">
         <action
             android:id="@+id/action_homeFragment_to_photoDetailsFragment"
             app:destination="@id/photoDetailsFragment" />
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/photoDetailsFragment"
-        android:name="com.wajahatkarim3.imagine.ui.photodetails.PhotoDetailsFragment"
+        android:name="com.abe.boilerplatemvvm.view.main.photos.detail.PhotoDetailsFragment"
         android:label="@string/screen_photo_details_title_str"
         tools:layout="@layout/photo_details_fragment" />
 </navigation>
