@@ -8,11 +8,8 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
-import com.abe.boilerplatemvvm.viewmodel.photos.PhotosViewModel
 
 abstract class BaseFragment<BINDING : ViewBinding> : Fragment(), BaseView {
 

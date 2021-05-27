@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 /**
- * The Dagger Module to provide the instances of [OkHttpClient], [Retrofit], and [WordpressApiService] classes.
+ * The Dagger Module to provide the instances of [OkHttpClient], [Retrofit], and [ApiService] classes.
  */
 @Module
 @InstallIn(SingletonComponent::class)

@@ -1,12 +1,10 @@
-package com.android.boilerplate.base.view
+package com.abe.boilerplatemvvm.base.view
 
 import android.content.Context
 import android.os.Bundle
 import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
-import com.abe.boilerplatemvvm.base.view.BaseActivity
-import com.abe.boilerplatemvvm.base.view.BaseView
 
 abstract class BaseDialogFragment : DialogFragment(), BaseView {
 

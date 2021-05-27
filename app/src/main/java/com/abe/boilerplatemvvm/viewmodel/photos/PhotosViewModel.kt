@@ -2,7 +2,6 @@ package com.abe.boilerplatemvvm.viewmodel.photos
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
 import com.abe.boilerplatemvvm.data.DataState
