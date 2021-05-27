@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
-    lateinit var bi: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     lateinit var navController: NavController
 
     override fun getViewModel(): BaseViewModel? = null
@@ -26,8 +26,8 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bi = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(bi.root)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setupViews()
     }
 

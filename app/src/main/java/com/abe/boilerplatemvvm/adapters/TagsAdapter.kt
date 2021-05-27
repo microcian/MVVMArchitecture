@@ -8,12 +8,13 @@ import com.abe.boilerplatemvvm.R
 import com.abe.boilerplatemvvm.databinding.TagItemLayoutBinding
 import com.abe.boilerplatemvvm.model.tags.TagModel
 
-class TagsAdapter(val onTagSelected: (tag: TagModel, position: Int) -> Unit) : RecyclerView.Adapter<TagsAdapter.TagViewHolder>() {
+class TagsAdapter(val onTagSelected: (tag: TagModel, position: Int) -> Unit) :
+        RecyclerView.Adapter<TagsAdapter.TagViewHolder>() {
 
     private val tagItems: ArrayList<TagModel> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
-        var binding = TagItemLayoutBinding.inflate(
+        val binding = TagItemLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -33,7 +34,7 @@ class TagsAdapter(val onTagSelected: (tag: TagModel, position: Int) -> Unit) : R
         notifyDataSetChanged()
     }
 
-    inner class TagViewHolder(val itemBinding: TagItemLayoutBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+    inner class TagViewHolder(private val itemBinding: TagItemLayoutBinding) : RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(tagModel: TagModel, position: Int) {
             itemBinding.apply {

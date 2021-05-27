@@ -1,9 +1,10 @@
-package com.abe.boilerplatemvvm.view.main.photos.detail
+package com.abe.boilerplatemvvm.viewmodel.photos.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
 import com.abe.boilerplatemvvm.model.photos.PhotoModel
+import com.abe.boilerplatemvvm.view.main.photos.detail.PhotoDetailsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

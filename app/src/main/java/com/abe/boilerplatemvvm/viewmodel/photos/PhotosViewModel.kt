@@ -16,8 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PhotosViewModel @Inject constructor(
-    private val fetchPopularPhotosUsecase: FetchPopularPhotosUsecase,
-    private val searchPhotosUsecase: SearchPhotosUsecase
+        private val fetchPopularPhotosUseCase: FetchPopularPhotosUsecase,
+        private val searchPhotosUseCase: SearchPhotosUsecase
 ) : BaseViewModel() {
 
     private var _uiState = MutableLiveData<PhotosUiState>()
@@ -57,7 +57,7 @@ class PhotosViewModel @Inject constructor(
     fun fetchPhotos(page: Int) {
         _uiState.postValue(if (page == 1) LoadingState else LoadingNextPageState)
         viewModelScope.launch {
-            fetchPopularPhotosUsecase(page).collect { dataState ->
+            fetchPopularPhotosUseCase(page).collect { dataState ->
                 when (dataState) {
                     is DataState.Success -> {
                         if (page == 1) {
@@ -67,7 +67,7 @@ class PhotosViewModel @Inject constructor(
                         } else {
                             // Any other page
                             _uiState.postValue(ContentNextPageState)
-                            var currentList = arrayListOf<PhotoModel>()
+                            val currentList = arrayListOf<PhotoModel>()
                             _photosList.value?.let { currentList.addAll(it) }
                             currentList.addAll(dataState.data)
                             _photosList.postValue(currentList)
@@ -89,7 +89,7 @@ class PhotosViewModel @Inject constructor(
     private fun searchPhotos(query: String, page: Int) {
         _uiState.postValue(if (page == 1) LoadingState else LoadingNextPageState)
         viewModelScope.launch {
-            searchPhotosUsecase(query, page).collect { dataState ->
+            searchPhotosUseCase(query, page).collect { dataState ->
                 when (dataState) {
                     is DataState.Success -> {
                         if (page == 1) {
@@ -99,7 +99,7 @@ class PhotosViewModel @Inject constructor(
                         } else {
                             // Any other page
                             _uiState.postValue(ContentNextPageState)
-                            var currentList = arrayListOf<PhotoModel>()
+                            val currentList = arrayListOf<PhotoModel>()
                             _photosList.value?.let { currentList.addAll(it) }
                             currentList.addAll(dataState.data)
                             _photosList.postValue(currentList)
