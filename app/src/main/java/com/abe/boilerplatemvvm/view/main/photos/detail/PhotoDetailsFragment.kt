@@ -10,7 +10,6 @@ import com.abe.boilerplatemvvm.base.view.BaseFragment
 import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
 import com.abe.boilerplatemvvm.databinding.PhotoDetailsFragmentBinding
 import com.abe.boilerplatemvvm.model.photos.PhotoModel
-import com.abe.boilerplatemvvm.viewmodel.photos.PhotosViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,7 +41,7 @@ class PhotoDetailsFragment : BaseFragment<PhotoDetailsFragmentBinding>() {
 
     fun initObservations() {
         viewModel.photoModelLiveData.observe(viewLifecycleOwner) { photo ->
-            bi.photoView.load(photo.urls.full)
+            binding.photoView.load(photo.urls.full)
         }
     }
 }

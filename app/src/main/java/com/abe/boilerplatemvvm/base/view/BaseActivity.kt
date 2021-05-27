@@ -9,11 +9,13 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.viewbinding.ViewBinding
 import com.abe.boilerplatemvvm.R
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.PrefKeys.KEY_DEFAULT
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.PrefKeys.KEY_LANG
@@ -23,8 +25,9 @@ import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
 import java.util.*
 
 @SuppressLint("Registered")
-abstract class BaseActivity : AppCompatActivity(), BaseView {
+abstract class BaseActivity/*<BINDING : ViewBinding>*/ : AppCompatActivity(), BaseView {
 
+//    protected lateinit var binding: BINDING
     private lateinit var dialog: Dialog
     private var availableNetwork: Network? = null
     private var originalSoftInputMode: Int? = null
@@ -35,6 +38,8 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
 
     abstract fun hasConnectivity(connectivity: Boolean)
 
+//    abstract fun setBinding(layoutInflater: LayoutInflater): BINDING
+
     /**
      * @param newBase the default base context of the application
      * @return overridden configuration with user's selected night mode and language preferences
@@ -44,7 +49,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
         val appName = applicationInfo.loadLabel(packageManager).toString()
         val sharedPreferences = getSharedPreferences(appName, Context.MODE_PRIVATE)
         val uiMode = sharedPreferences.getInt(
-            KEY_THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                KEY_THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         )
         AppCompatDelegate.setDefaultNightMode(uiMode)
         sharedPreferences.getString(KEY_LANG, KEY_DEFAULT)?.let {
@@ -155,8 +160,8 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
 
     private fun registerNetworkCallback() {
         val networkRequest = NetworkRequest.Builder()
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-            .build()
+                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                .build()
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
     }
 

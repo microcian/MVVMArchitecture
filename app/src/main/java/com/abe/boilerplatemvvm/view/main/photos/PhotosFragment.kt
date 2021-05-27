@@ -73,8 +73,8 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
                 flexDirection = FlexDirection.ROW
                 alignItems = AlignItems.STRETCH
             }
-            bi.recyclerTags.layoutManager = flexboxLayoutManager
-            bi.recyclerTags.adapter = tagsAdapter
+            binding.recyclerTags.layoutManager = flexboxLayoutManager
+            binding.recyclerTags.adapter = tagsAdapter
 
             // Photos RecyclerView
             photosAdapter = PhotosAdapter() { photo, _ ->
@@ -82,26 +82,26 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
                 findNavController().navigate(R.id.action_homeFragment_to_photoDetailsFragment, bundle)
             }
             photosAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-            bi.recyclerPopularPhotos.adapter = photosAdapter
+            binding.recyclerPopularPhotos.adapter = photosAdapter
 
             // NestedScrollView
-            bi.nestedScrollView.setOnScrollChangeListener { v: NestedScrollView, _, scrollY, _, _ ->
+            binding.nestedScrollView.setOnScrollChangeListener { v: NestedScrollView, _, scrollY, _, _ ->
                 if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
                     viewModel.loadMorePhotos()
                 }
             }
 
             // Input Text Search
-            bi.inputSearchPhotos.setEndIconOnClickListener {
-                bi.txtSearchPhotos.setText("")
-                bi.lblPopular.setText(getString(R.string.label_popular_text_str))
+            binding.inputSearchPhotos.setEndIconOnClickListener {
+                binding.txtSearchPhotos.setText("")
+                binding.lblPopular.setText(getString(R.string.label_popular_text_str))
                 viewModel.fetchPhotos(1)
             }
 
-            bi.txtSearchPhotos.setOnEditorActionListener { _, actionId, _ ->
+            binding.txtSearchPhotos.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    bi.txtSearchPhotos.dismissKeyboard()
-                    performSearch(bi.txtSearchPhotos.text.toString())
+                    binding.txtSearchPhotos.dismissKeyboard()
+                    performSearch(binding.txtSearchPhotos.text.toString())
                     true
                 }
                 false
@@ -110,8 +110,8 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
     }
 
     private fun performSearch(query: String) {
-        bi.txtSearchPhotos.setText(query)
-        bi.lblPopular.setText(getString(R.string.message_search_results_for_str, query))
+        binding.txtSearchPhotos.setText(query)
+        binding.lblPopular.setText(getString(R.string.message_search_results_for_str, query))
         viewModel.searchPhotos(query)
     }
 
@@ -119,8 +119,8 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
         viewModel.uiStateLiveData.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is LoadingState -> {
-                    bi.recyclerPopularPhotos.gone()
-                    bi.progressPhotos.visible()
+                    binding.recyclerPopularPhotos.gone()
+                    binding.progressPhotos.visible()
                 }
 
                 is LoadingNextPageState -> {
@@ -128,19 +128,19 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
                 }
 
                 is ContentState -> {
-                    bi.recyclerPopularPhotos.visible()
-                    bi.progressPhotos.gone()
+                    binding.recyclerPopularPhotos.visible()
+                    binding.progressPhotos.gone()
                 }
 
                 is ErrorState -> {
-                    bi.progressPhotos.gone()
-                    bi.nestedScrollView.showSnack(state.message, getString(R.string.action_retry_str)) {
+                    binding.progressPhotos.gone()
+                    binding.nestedScrollView.showSnack(state.message, getString(R.string.action_retry_str)) {
                         viewModel.retry()
                     }
                 }
 
                 is ErrorNextPageState -> {
-                    bi.nestedScrollView.showSnack(state.message, getString(R.string.action_retry_str)) {
+                    binding.nestedScrollView.showSnack(state.message, getString(R.string.action_retry_str)) {
                         viewModel.retry()
                     }
                 }

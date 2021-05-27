@@ -8,16 +8,19 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
+import com.abe.boilerplatemvvm.viewmodel.photos.PhotosViewModel
 
-abstract class BaseFragment<VB : ViewBinding> : Fragment(), BaseView {
+abstract class BaseFragment<BINDING : ViewBinding> : Fragment(), BaseView {
 
     private var activity: BaseActivity? = null
-    private var _bi: VB? = null
-    protected val bi: VB get() = _bi!!
+    private var _binding: BINDING? = null
+    protected val binding: BINDING get() = _binding!!
 
-    abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
+    abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> BINDING
     abstract fun getViewModel(): BaseViewModel?
 
     override fun onAttach(context: Context) {
@@ -29,8 +32,8 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), BaseView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        _bi = bindingInflater(inflater, container, false)
-        return _bi!!.root
+        _binding = bindingInflater(inflater, container, false)
+        return _binding!!.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -52,7 +55,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), BaseView {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _bi = null
+        _binding = null
     }
 
     override fun setSoftInputMode(mode: Int) {

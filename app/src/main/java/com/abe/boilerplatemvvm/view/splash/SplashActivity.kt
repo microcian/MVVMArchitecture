@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.Lifecycle
-import com.abe.boilerplatemvvm.R
-import com.abe.boilerplatemvvm.databinding.ActivityMainBinding
 import com.abe.boilerplatemvvm.databinding.ActivitySplashBinding
 import com.abe.boilerplatemvvm.view.main.MainActivity
 
@@ -28,6 +26,6 @@ class SplashActivity : AppCompatActivity() {
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
-        }, 2000)
+        }, 1000)
     }
 }
