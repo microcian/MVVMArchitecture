@@ -35,7 +35,7 @@ class NetworkApiModule {
             .addInterceptor { chain ->
                 val request = chain.request()
                 val newRequest =
-                    request.newBuilder().header("Authorization", AppConstants.API.API_KEY)
+                    request.newBuilder().header("Authorization", AppConstants.ApiRequestParams.API_KEY)
                 chain.proceed(newRequest.build())
             }
             .addInterceptor(logging)

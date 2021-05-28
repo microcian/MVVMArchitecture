@@ -15,6 +15,7 @@ import com.abe.boilerplatemvvm.adapters.PhotosAdapter
 import com.abe.boilerplatemvvm.adapters.TagsAdapter
 import com.abe.boilerplatemvvm.base.view.BaseFragment
 import androidx.navigation.fragment.findNavController
+import com.abe.boilerplatemvvm.aide.utils.AppConstants.BundleArgs.KEY_PHOTO
 import com.abe.boilerplatemvvm.aide.utils.dismissKeyboard
 import com.abe.boilerplatemvvm.aide.utils.gone
 import com.abe.boilerplatemvvm.aide.utils.showSnack
@@ -78,7 +79,7 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
 
             // Photos RecyclerView
             photosAdapter = PhotosAdapter() { photo, _ ->
-                val bundle = bundleOf("photo" to photo)
+                val bundle = bundleOf(KEY_PHOTO to photo)
                 findNavController().navigate(R.id.action_homeFragment_to_photoDetailsFragment, bundle)
             }
             photosAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY

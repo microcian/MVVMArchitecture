@@ -11,7 +11,7 @@ class SearchPhotosUsecase @Inject constructor(private val repository: ImagineRep
     suspend operator fun invoke(
         query: String,
         pageNum: Int = 1,
-        pageSize: Int = AppConstants.API.PHOTOS_PER_PAGE
+        pageSize: Int = AppConstants.ApiRequestParams.PHOTOS_PER_PAGE
     ) = repository.searchPhotos(
         query = query,
         pageNumber = pageNum,

@@ -9,9 +9,9 @@ import javax.inject.Inject
  */
 class FetchPopularPhotosUsecase @Inject constructor(private val repository: ImagineRepository) {
     suspend operator fun invoke(
-        pageNum: Int = 1,
-        pageSize: Int = AppConstants.API.PHOTOS_PER_PAGE,
-        orderBy: String = "popular"
+            pageNum: Int = 1,
+            pageSize: Int = AppConstants.ApiRequestParams.PHOTOS_PER_PAGE,
+            orderBy: String = "popular"
     ) = repository.loadPhotos(
         pageNumber = pageNum,
         pageSize = pageSize,

@@ -2,14 +2,17 @@ package com.abe.boilerplatemvvm.aide.utils
 
 object AppConstants {
 
-    const val CONNECT_TIMEOUT: Long = 30
-    const val WRITE_TIMEOUT: Long = 30
-    const val READ_TIMEOUT: Long = 30
-    const val BEARER: String = "Bearer "
+    object ApiEndPoints {}
 
-    object API {
-        val PHOTOS_PER_PAGE = 30
-        val API_KEY = "Client-ID wxl8gDYQvKHvTcfTzfFJ2Fy0GoSuKoJovMopdieYBvk"
+    object ApiRequestParams {
+        const val PHOTOS_PER_PAGE = 30
+        const val API_KEY = "Client-ID wxl8gDYQvKHvTcfTzfFJ2Fy0GoSuKoJovMopdieYBvk"
+    }
+
+    object ResponseParams {
+        const val KEY_TOTAL = "total"
+        const val KEY_TOTAL_PAGES = "total_pages"
+        const val KEY_RESULTS = "results"
     }
 
     object PrefKeys {
@@ -17,4 +20,10 @@ object AppConstants {
         const val KEY_THEME = "theme"
         const val KEY_LANG = "lang"
     }
+
+    object BundleArgs {
+        const val KEY_PHOTO = "photo"
+    }
+
+    object CallBack {}
 }
