@@ -9,13 +9,11 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.viewbinding.ViewBinding
 import com.abe.boilerplatemvvm.R
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.PrefKeys.KEY_DEFAULT
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.PrefKeys.KEY_LANG
@@ -123,7 +121,7 @@ abstract class BaseActivity/*<BINDING : ViewBinding>*/ : AppCompatActivity(), Ba
     }
 
     override fun noConnectivity() {
-        showToast(getString(R.string.no_internet_connectivity))
+        showToast(getString(R.string.message_no_network_connected_str))
     }
 
     override fun loaderVisibility(visibility: Boolean) {
