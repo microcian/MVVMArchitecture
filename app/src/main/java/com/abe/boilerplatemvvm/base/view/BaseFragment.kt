@@ -13,7 +13,7 @@ import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
 
 abstract class BaseFragment<BINDING : ViewBinding> : Fragment(), BaseView {
 
-    private var activity: BaseActivity? = null
+    private var activity: BaseActivity<*>? = null
     private var _binding: BINDING? = null
     protected val binding: BINDING get() = _binding!!
 
@@ -22,7 +22,7 @@ abstract class BaseFragment<BINDING : ViewBinding> : Fragment(), BaseView {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is BaseActivity) {
+        if (context is BaseActivity<*>) {
             activity = context
         }
     }

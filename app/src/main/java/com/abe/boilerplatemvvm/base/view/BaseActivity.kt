@@ -9,11 +9,13 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.viewbinding.ViewBinding
 import com.abe.boilerplatemvvm.R
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.PrefKeys.KEY_DEFAULT
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.PrefKeys.KEY_LANG
@@ -23,17 +25,19 @@ import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
 import java.util.*
 
 @SuppressLint("Registered")
-abstract class BaseActivity/*<BINDING : ViewBinding>*/ : AppCompatActivity(), BaseView {
+abstract class BaseActivity<BINDING : ViewBinding> : AppCompatActivity(), BaseView {
 
-//    protected lateinit var binding: BINDING
+    //    protected lateinit var binding: BINDING
+    private var _binding: BINDING? = null
+    protected val binding: BINDING get() = _binding!!
     private lateinit var dialog: Dialog
     private var availableNetwork: Network? = null
     private var originalSoftInputMode: Int? = null
     private lateinit var inputManager: InputMethodManager
     private lateinit var connectivityManager: ConnectivityManager
 
+    abstract val bindingInflater: (LayoutInflater) -> BINDING
     abstract fun getViewModel(): BaseViewModel?
-
     abstract fun hasConnectivity(connectivity: Boolean)
 
 //    abstract fun setBinding(layoutInflater: LayoutInflater): BINDING
@@ -69,6 +73,7 @@ abstract class BaseActivity/*<BINDING : ViewBinding>*/ : AppCompatActivity(), Ba
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        _binding = bindingInflater(layoutInflater)
         dialog = DialogUtils.createProgressDialog(this, false)
         inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

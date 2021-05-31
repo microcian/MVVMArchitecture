@@ -8,11 +8,11 @@ import androidx.fragment.app.DialogFragment
 
 abstract class BaseDialogFragment : DialogFragment(), BaseView {
 
-    private var activity: BaseActivity? = null
+    private var activity: BaseActivity<*>? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is BaseActivity) {
+        if (context is BaseActivity<*>) {
             activity = context
         }
     }

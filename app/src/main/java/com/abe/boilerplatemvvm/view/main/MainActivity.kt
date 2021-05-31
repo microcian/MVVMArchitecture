@@ -2,6 +2,7 @@ package com.abe.boilerplatemvvm.view.main
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatDelegate
@@ -15,10 +16,13 @@ import com.abe.boilerplatemvvm.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity<ActivityMainBinding>() {
 
-    lateinit var binding: ActivityMainBinding
+    //    lateinit var binding: ActivityMainBinding
     lateinit var navController: NavController
+
+    override val bindingInflater: (LayoutInflater) -> ActivityMainBinding
+        get() = ActivityMainBinding::inflate
 
     override fun getViewModel(): BaseViewModel? = null
 
@@ -26,7 +30,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+//        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupViews()
     }
@@ -52,13 +56,13 @@ class MainActivity : BaseActivity() {
             R.id.action_day_night_mode -> {
                 // Get new mode.
                 val mode =
-                    if ((resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
-                        Configuration.UI_MODE_NIGHT_NO
-                    ) {
-                        AppCompatDelegate.MODE_NIGHT_YES
-                    } else {
-                        AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
-                    }
+                        if ((resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+                                Configuration.UI_MODE_NIGHT_NO
+                        ) {
+                            AppCompatDelegate.MODE_NIGHT_YES
+                        } else {
+                            AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+                        }
 
                 // Change UI Mode
                 AppCompatDelegate.setDefaultNightMode(mode)
