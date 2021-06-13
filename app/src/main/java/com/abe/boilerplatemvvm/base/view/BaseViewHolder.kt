@@ -1,10 +1,21 @@
 package com.abe.boilerplatemvvm.base.view
 
+import android.content.Context
+import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseViewHolder<BINDING : ViewDataBinding>(binding: BINDING) :
-    RecyclerView.ViewHolder(binding.root) {
+@Suppress("unused", "LeakingThis")
+abstract class BaseViewHolder<BINDING : ViewDataBinding>(private val view: BINDING) :
+    RecyclerView.ViewHolder(view.root), View.OnClickListener, View.OnLongClickListener {
+    init {
+        view.root.setOnClickListener(this)
+        view.root.setOnLongClickListener(this)
+    }
 
-    abstract fun bind(position: Int)
+    abstract fun bindData(data: Any, position: Int)
+    fun view() = view.root
+    fun binding() = view
+    fun context(): Context = view.root.context
+
 }

@@ -1,40 +1,48 @@
 package com.abe.boilerplatemvvm.base.viewmodel
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import retrofit2.HttpException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
-import java.util.concurrent.TimeoutException
+import kotlinx.coroutines.Job
 
-open class BaseViewModel : ViewModel() {
+abstract class BaseViewModel : ViewModel() {
 
-    val error = MutableLiveData<String>()
-    val loader = MutableLiveData<Boolean>()
+    companion  object {
+        var job = Job()
+    }
+    var outcomeLiveData = MediatorLiveData<Result<*>>()
 
-    private fun showError(e: String) {
-        error.postValue(e)
+    // Cancel the job when the view model is destroyed
+    override fun onCleared() {
+        super.onCleared()
+        job.cancel()
     }
 
-    fun showLoader(show: Boolean) {
-        loader.postValue(show)
-    }
+//    val error = MutableLiveData<String>()
+//    val loader = MutableLiveData<Boolean>()
+//
+//    private fun showError(e: String) {
+//        error.postValue(e)
+//    }
 
-    fun handleException(exception: Exception) {
-        showLoader(false)
-        when (exception) {
-            is TimeoutException, is SocketTimeoutException -> {
-                showError(exception.toString())
-            }
-            is UnknownHostException -> {
-                showError(exception.toString())
-            }
-            is HttpException -> {
-                showError(exception.toString())
-            }
-            else -> {
-                showError(exception.toString())
-            }
-        }
-    }
+//    fun showLoader(show: Boolean) {
+//        loader.postValue(show)
+//    }
+
+//    fun handleException(exception: Exception) {
+//        showLoader(false)
+//        when (exception) {
+//            is TimeoutException, is SocketTimeoutException -> {
+//                showError(exception.toString())
+//            }
+//            is UnknownHostException -> {
+//                showError(exception.toString())
+//            }
+//            is HttpException -> {
+//                showError(exception.toString())
+//            }
+//            else -> {
+//                showError(exception.toString())
+//            }
+//        }
+//    }
 }

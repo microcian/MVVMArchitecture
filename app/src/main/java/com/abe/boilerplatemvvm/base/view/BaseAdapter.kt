@@ -2,29 +2,68 @@ package com.abe.boilerplatemvvm.base.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import java.util.ArrayList
 
-abstract class BaseAdapter<BINDING : ViewDataBinding, HOLDER, VH : BaseViewHolder<BINDING>>
-    (diffUtil: DiffUtil.ItemCallback<HOLDER>) : ListAdapter<HOLDER, BaseViewHolder<BINDING>>(diffUtil) {
+abstract class BaseAdapter<BINDING : ViewDataBinding> :
+    RecyclerView.Adapter<BaseViewHolder<BINDING>>() {
 
-    abstract fun getLayoutId(): Int
+    private val data = mutableListOf<Any>()
+    var totalCount: Int = 0
 
-    abstract fun getInflater(): LayoutInflater
-
-    abstract fun createViewHolder(binding: BINDING): BaseViewHolder<BINDING>
-
-    private fun inflateView(parent: ViewGroup): BINDING {
-        return DataBindingUtil.inflate(getInflater(), getLayoutId(), parent, false)
+    fun data(): MutableList<Any> {
+        return data
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<BINDING> {
-        return createViewHolder(inflateView(parent))
+    fun <T> addData(data: List<T>) {
+        data().addAll(ArrayList<Any>(data))
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder<BINDING>, position: Int) {
-        holder.bind(position)
+    protected abstract fun viewHolder(
+        @LayoutRes layout: Int,
+        binding: BINDING
+    ): BaseViewHolder<BINDING>
+
+    protected abstract fun layout(position: Int): Int
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        @LayoutRes layout: Int
+    ): BaseViewHolder<BINDING> {
+        val view = inflateView(parent, layout)
+        return viewHolder(layout, view)
+    }
+
+    override fun getItemCount(): Int {
+        return data().size
+    }
+
+    override fun onBindViewHolder(viewHolder: BaseViewHolder<BINDING>, position: Int) {
+        val data = data()[position]
+        try {
+            viewHolder.bindData(data, position)
+            viewHolder.binding().executePendingBindings()
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return layout(position)
+    }
+
+    private fun inflateView(viewGroup: ViewGroup, @LayoutRes viewType: Int): BINDING {
+
+        return DataBindingUtil.inflate(
+            LayoutInflater.from(viewGroup.context),
+            viewType,
+            viewGroup,
+            false
+        )
+
     }
 }
