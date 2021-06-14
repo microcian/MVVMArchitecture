@@ -42,12 +42,8 @@ class PhotoDetailsFragment : BaseFragment<PhotoDetailsFragmentBinding>() {
             findNavController().popBackStack()
             return
         }
-        setUpViews()
         initObservations()
         viewModel.initPhotoModel(photo)
-    }
-
-    private fun setUpViews() {
     }
 
     private fun initObservations() {
