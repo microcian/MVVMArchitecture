@@ -9,6 +9,9 @@ import kotlinx.coroutines.flow.Flow
  * @see [ImagineRepositoryImpl] for implementation of this class to utilize Unsplash API.
  */
 interface ImagineRepository {
-    suspend fun loadPhotos(pageNumber: Int, pageSize: Int, orderBy: String): Flow<DataState<List<PhotoModel>>>
-    suspend fun searchPhotos(query: String, pageNumber: Int, pageSize: Int): Flow<DataState<List<PhotoModel>>>
+    suspend fun loadPhotos(pageNumber: Int, pageSize: Int, orderBy: String):
+            Flow<DataState<List<PhotoModel>>>
+
+    suspend fun searchPhotos(query: String, pageNumber: Int, pageSize: Int):
+            Flow<DataState<List<PhotoModel>>>
 }

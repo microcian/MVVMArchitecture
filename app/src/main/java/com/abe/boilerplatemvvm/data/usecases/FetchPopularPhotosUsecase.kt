@@ -13,8 +13,8 @@ class FetchPopularPhotosUsecase @Inject constructor(private val repository: Imag
             pageSize: Int = AppConstants.ApiRequestParams.PHOTOS_PER_PAGE,
             orderBy: String = "popular"
     ) = repository.loadPhotos(
-        pageNumber = pageNum,
-        pageSize = pageSize,
-        orderBy = orderBy
+            pageNumber = pageNum,
+            pageSize = pageSize,
+            orderBy = orderBy
     )
 }

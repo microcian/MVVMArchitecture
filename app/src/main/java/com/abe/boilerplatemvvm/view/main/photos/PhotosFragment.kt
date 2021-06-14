@@ -1,14 +1,11 @@
 package com.abe.boilerplatemvvm.view.main.photos
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.os.bundleOf
 import androidx.core.widget.NestedScrollView
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.abe.boilerplatemvvm.R
 import com.abe.boilerplatemvvm.adapters.PhotosAdapter
@@ -34,26 +31,40 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
 
-    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> PhotosFragmentBinding
-        get() = PhotosFragmentBinding::inflate
+    override fun getLayoutId(): Int = R.layout.photos_fragment
 
-    private val viewModel: PhotosViewModel by viewModels()
-    override fun getViewModel(): BaseViewModel = viewModel
+    private val viewModel by viewModel<PhotosViewModel>()
+    private val photosAdapter by lazy {
+        PhotosAdapter { news ->
+            val bundle = Bundle()
+            bundle.putParcelable("news", news)
+//            val args = NewsDetailsFragmentArgs.fromBundle(bundle)
+//            navigateToDestination(R.id.actionNewsListToDetails, args.toBundle())
+        }
+    }
 
     lateinit var tagsAdapter: TagsAdapter
-    lateinit var photosAdapter: PhotosAdapter
+//    lateinit var photosAdapter: PhotosAdapter
 
-    var snackBar: Snackbar? = null
+    override fun getViewModel(): BaseViewModel? {
+        return viewModel
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+        viewModel.fetchPhotos(1)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_main, menu)
+    override fun initFragment() {
+        if (binding.lifecycleOwner == null) {
+            binding.apply {
+                lifecycleOwner = this@PhotosFragment
+                viewModel = this@PhotosFragment.viewModel
+                adapter = photosAdapter
+            }
+        }
     }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

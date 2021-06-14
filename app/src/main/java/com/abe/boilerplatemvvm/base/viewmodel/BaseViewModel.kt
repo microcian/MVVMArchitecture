@@ -2,6 +2,7 @@ package com.abe.boilerplatemvvm.base.viewmodel
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
+import com.abe.boilerplatemvvm.base.stateUI.StateViewModel
 import kotlinx.coroutines.Job
 
 abstract class BaseViewModel : ViewModel() {
@@ -9,7 +10,7 @@ abstract class BaseViewModel : ViewModel() {
     companion  object {
         var job = Job()
     }
-    var outcomeLiveData = MediatorLiveData<Result<*>>()
+    var outcomeLiveData = MediatorLiveData<StateViewModel<*>>()
 
     // Cancel the job when the view model is destroyed
     override fun onCleared() {
