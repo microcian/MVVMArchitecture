@@ -1,25 +1,21 @@
 package com.abe.boilerplatemvvm.view.main.photos
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.os.bundleOf
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.abe.boilerplatemvvm.R
 import com.abe.boilerplatemvvm.adapters.PhotosAdapter
 import com.abe.boilerplatemvvm.adapters.TagsAdapter
-import com.abe.boilerplatemvvm.base.view.BaseFragment
-import androidx.navigation.fragment.findNavController
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.BundleArgs.KEY_PHOTO
 import com.abe.boilerplatemvvm.aide.utils.dismissKeyboard
 import com.abe.boilerplatemvvm.aide.utils.gone
 import com.abe.boilerplatemvvm.aide.utils.showSnack
 import com.abe.boilerplatemvvm.aide.utils.visible
+import com.abe.boilerplatemvvm.base.view.BaseFragment
 import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
 import com.abe.boilerplatemvvm.databinding.PhotosFragmentBinding
 import com.abe.boilerplatemvvm.model.tags.TagModel
@@ -28,14 +24,13 @@ import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
 
-    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> PhotosFragmentBinding
-        get() = PhotosFragmentBinding::inflate
+//    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> PhotosFragmentBinding
+//        get() = PhotosFragmentBinding::inflate
 
     private val viewModel: PhotosViewModel by viewModels()
     override fun getViewModel(): BaseViewModel = viewModel
@@ -43,17 +38,17 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
     lateinit var tagsAdapter: TagsAdapter
     lateinit var photosAdapter: PhotosAdapter
 
-    var snackBar: Snackbar? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+    override fun initFragment() {
+        if (binding.lifecycleOwner == null) {
+            binding.apply {
+//                lifecycleOwner = this@NewsListFragment
+//                viewModel = this@NewsListFragment.viewModel
+//                adapter = newsAdapter
+            }
+        }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_main, menu)
-    }
+    override fun getLayoutId(): Int = R.layout.photos_fragment
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

@@ -14,6 +14,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import com.abe.boilerplatemvvm.R
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.PrefKeys.KEY_DEFAULT
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.PrefKeys.KEY_LANG
@@ -23,20 +25,17 @@ import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
 import java.util.*
 
 @SuppressLint("Registered")
-abstract class BaseActivity/*<BINDING : ViewBinding>*/ : AppCompatActivity(), BaseView {
+abstract class BaseActivity<BINDING : ViewDataBinding> : AppCompatActivity(), BaseView {
 
-//    protected lateinit var binding: BINDING
+    abstract fun getViewModel(): BaseViewModel?
+    abstract fun hasConnectivity(connectivity: Boolean)
+
+    lateinit var binding: BINDING
     private lateinit var dialog: Dialog
     private var availableNetwork: Network? = null
     private var originalSoftInputMode: Int? = null
     private lateinit var inputManager: InputMethodManager
     private lateinit var connectivityManager: ConnectivityManager
-
-    abstract fun getViewModel(): BaseViewModel?
-
-    abstract fun hasConnectivity(connectivity: Boolean)
-
-//    abstract fun setBinding(layoutInflater: LayoutInflater): BINDING
 
     /**
      * @param newBase the default base context of the application
@@ -69,6 +68,7 @@ abstract class BaseActivity/*<BINDING : ViewBinding>*/ : AppCompatActivity(), Ba
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, getLayoutId())
         dialog = DialogUtils.createProgressDialog(this, false)
         inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

@@ -15,18 +15,20 @@ import com.abe.boilerplatemvvm.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity<ActivityMainBinding>() {
 
-    lateinit var binding: ActivityMainBinding
+//    lateinit var binding: ActivityMainBinding
     lateinit var navController: NavController
 
     override fun getViewModel(): BaseViewModel? = null
+
+    override fun getLayoutId() = R.layout.activity_main
 
     override fun hasConnectivity(connectivity: Boolean) {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+//        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupViews()
     }

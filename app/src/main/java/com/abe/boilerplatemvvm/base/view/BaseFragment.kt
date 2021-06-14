@@ -7,30 +7,43 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.viewbinding.ViewBinding
 import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
 
-abstract class BaseFragment<BINDING : ViewBinding> : Fragment(), BaseView {
+abstract class BaseFragment<BINDING : ViewDataBinding> : Fragment(), BaseView {
 
-    private var activity: BaseActivity? = null
-    private var _binding: BINDING? = null
-    protected val binding: BINDING get() = _binding!!
-
-    abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> BINDING
     abstract fun getViewModel(): BaseViewModel?
+    abstract fun initFragment()
+
+    private var activity: BaseActivity<*>? = null
+    lateinit var binding: BINDING
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is BaseActivity) {
+        if (context is BaseActivity<*>) {
             activity = context
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
 
-        _binding = bindingInflater(inflater, container, false)
-        return _binding!!.root
+        return if (!this::binding.isInitialized) {
+            DataBindingUtil.inflate<BINDING>(
+                    inflater,
+                    getLayoutId(),
+                    container, false
+            ).apply {
+                binding = this
+                initFragment()
+            }.root
+        } else binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -48,11 +61,6 @@ abstract class BaseFragment<BINDING : ViewBinding> : Fragment(), BaseView {
                 }
             })
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     override fun setSoftInputMode(mode: Int) {
@@ -89,11 +97,11 @@ abstract class BaseFragment<BINDING : ViewBinding> : Fragment(), BaseView {
 
     fun callBackKeyHandling(function: () -> Unit) {
         val callback: OnBackPressedCallback =
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    function()
+                object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        function()
+                    }
                 }
-            }
         activity?.onBackPressedDispatcher?.addCallback(this, callback)
     }
 }
