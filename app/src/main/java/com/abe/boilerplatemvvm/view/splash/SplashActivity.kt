@@ -1,10 +1,10 @@
 package com.abe.boilerplatemvvm.view.splash
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import com.abe.boilerplatemvvm.databinding.ActivitySplashBinding
 import com.abe.boilerplatemvvm.view.main.MainActivity

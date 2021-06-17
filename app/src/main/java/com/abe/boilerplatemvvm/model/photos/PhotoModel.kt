@@ -1,15 +1,19 @@
 package com.abe.boilerplatemvvm.model.photos
 
 import android.os.Parcelable
-import com.google.gson.annotations.Expose
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
+@Entity
 data class PhotoModel(
-    @Expose val id: String,
-    @Expose val created_at: String,
-    @Expose val color: String,
-    @Expose val description: String,
-    @Expose val urls: PhotoUrlsModel,
-    @Expose val user: UserModel
+    @PrimaryKey var id: String,
+    var created_at: String,
+    var color: String,
+    var description: String,
+    var urls: PhotoUrlsModel,
+    var user: UserModel
 ) : Parcelable
+
+
