@@ -4,6 +4,7 @@ import androidx.annotation.WorkerThread
 import com.abe.boilerplatemvvm.aide.utils.StringUtils
 import com.abe.boilerplatemvvm.data.DataState
 import com.abe.boilerplatemvvm.data.remote.*
+import com.abe.boilerplatemvvm.database.AppDatabase
 import com.abe.boilerplatemvvm.model.photos.PhotoModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -15,7 +16,8 @@ import javax.inject.Inject
  */
 class ImagineRepositoryImpl @Inject constructor(
     private val stringUtils: StringUtils,
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val appDatabase: AppDatabase
 ) : ImagineRepository {
 
     @WorkerThread
@@ -28,6 +30,7 @@ class ImagineRepositoryImpl @Inject constructor(
             apiService.loadPhotos(pageNumber, pageSize, orderBy).apply {
                 this.onSuccessSuspend {
                     data?.let {
+                        appDatabase.photoDao().insertPhotosList(it)
                         emit(DataState.success(it))
                     }
                 }

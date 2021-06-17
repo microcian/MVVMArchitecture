@@ -1,6 +1,5 @@
 package com.abe.boilerplatemvvm.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.abe.boilerplatemvvm.model.photos.PhotoModel
 
@@ -17,5 +16,5 @@ interface PhotoDao {
 //  fun getPhotoById(id_: Int): Movie
 
   @Query("SELECT * FROM PhotoModel")
-  fun getAllPhotos(): LiveData<List<PhotoModel>>
+  fun getAllPhotos(): List<PhotoModel>
 }
