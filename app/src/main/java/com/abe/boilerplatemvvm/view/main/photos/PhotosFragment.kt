@@ -45,9 +45,10 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
         if (binding.lifecycleOwner == null) {
             binding.apply {
                 lifecycleOwner = this@PhotosFragment
-                photosViewModel = this@PhotosFragment.viewModel
-                tagsViewModel = this@PhotosFragment.viewModelTags
-                adapter = tagsAdapter
+                viewModelPhotos = this@PhotosFragment.viewModel
+                viewModelTags = this@PhotosFragment.viewModelTags
+                adapterTags = tagsAdapter
+                adapterPhotos = tagsAdapter
             }
         }
     }
@@ -78,7 +79,7 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
             binding.recyclerTags.adapter = tagsAdapter
 
             // Photos RecyclerView
-            photosAdapter = PhotosAdapter { photo, _ ->
+            photosAdapter = PhotosAdapter { photo ->
                 val bundle = bundleOf(KEY_PHOTO to photo)
                 findNavController().navigate(
                     R.id.action_homeFragment_to_photoDetailsFragment,
@@ -158,9 +159,9 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
                 EmptyState -> TODO()
             }
         }
-        viewModel.photosListLiveData.observe(viewLifecycleOwner) { photos ->
-            photosAdapter.updateItems(photos)
-        }
+//        viewModel.photosListLiveData.observe(viewLifecycleOwner) { photos ->
+//            photosAdapter.updateItems(photos)
+//        }
     }
 
     private fun initTags() {

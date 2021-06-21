@@ -33,6 +33,8 @@ class PhotosViewModel @Inject constructor(
         fetchPhotos(pageNumber)
     }
 
+    fun getAllPhotos() = photosListLiveData
+
     fun loadMorePhotos() {
         pageNumber++
         if (searchQuery == "")
