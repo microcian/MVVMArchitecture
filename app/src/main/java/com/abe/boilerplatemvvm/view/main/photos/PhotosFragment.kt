@@ -20,6 +20,7 @@ import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
 import com.abe.boilerplatemvvm.databinding.PhotosFragmentBinding
 import com.abe.boilerplatemvvm.model.tags.TagModel
 import com.abe.boilerplatemvvm.viewmodel.photos.PhotosViewModel
+import com.abe.boilerplatemvvm.viewmodel.tags.TagsViewModel
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
@@ -29,21 +30,24 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
 
-//    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> PhotosFragmentBinding
-//        get() = PhotosFragmentBinding::inflate
-
+    private val viewModelTags: TagsViewModel by viewModels()
     private val viewModel: PhotosViewModel by viewModels()
     override fun getViewModel(): BaseViewModel = viewModel
 
-    lateinit var tagsAdapter: TagsAdapter
+    private val tagsAdapter by lazy {
+        TagsAdapter { tagModel ->
+            performSearch(tagModel.tagName)
+        }
+    }
     lateinit var photosAdapter: PhotosAdapter
 
     override fun initFragment() {
         if (binding.lifecycleOwner == null) {
             binding.apply {
-//                lifecycleOwner = this@NewsListFragment
-//                viewModel = this@NewsListFragment.viewModel
-//                adapter = newsAdapter
+                lifecycleOwner = this@PhotosFragment
+                photosViewModel = this@PhotosFragment.viewModel
+                tagsViewModel = this@PhotosFragment.viewModelTags
+                adapter = tagsAdapter
             }
         }
     }
@@ -61,9 +65,10 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
     private fun setupViews() {
         context?.let { ctx ->
             // Tags RecyclerView
-            tagsAdapter = TagsAdapter { tag, _ ->
-                performSearch(tag.tagName)
-            }
+//            tagsAdapter = TagsAdapter { tag, _ ->
+//                performSearch(tag.tagName)
+//            }
+//            tagsAdapter = TagsAdapter { tagModel -> performSearch(tagModel.tagName) }
             val flexBoxLayoutManager = FlexboxLayoutManager(ctx).apply {
                 flexWrap = FlexWrap.WRAP
                 flexDirection = FlexDirection.ROW
@@ -73,11 +78,15 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
             binding.recyclerTags.adapter = tagsAdapter
 
             // Photos RecyclerView
-            photosAdapter = PhotosAdapter() { photo, _ ->
+            photosAdapter = PhotosAdapter { photo, _ ->
                 val bundle = bundleOf(KEY_PHOTO to photo)
-                findNavController().navigate(R.id.action_homeFragment_to_photoDetailsFragment, bundle)
+                findNavController().navigate(
+                    R.id.action_homeFragment_to_photoDetailsFragment,
+                    bundle
+                )
             }
-            photosAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+            photosAdapter.stateRestorationPolicy =
+                RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             binding.recyclerPopularPhotos.adapter = photosAdapter
 
             // NestedScrollView
@@ -90,7 +99,7 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
             // Input Text Search
             binding.inputSearchPhotos.setEndIconOnClickListener {
                 binding.txtSearchPhotos.setText("")
-                binding.lblPopular.setText(getString(R.string.label_popular_text_str))
+                binding.lblPopular.text = getString(R.string.label_popular_text_str)
                 viewModel.fetchPhotos(1)
             }
 
@@ -106,7 +115,7 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
 
     private fun performSearch(query: String) {
         binding.txtSearchPhotos.setText(query)
-        binding.lblPopular.setText(getString(R.string.message_search_results_for_str, query))
+        binding.lblPopular.text = getString(R.string.message_search_results_for_str, query)
         viewModel.searchPhotos(query)
     }
 
@@ -129,13 +138,19 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
 
                 is ErrorState -> {
                     binding.progressPhotos.gone()
-                    binding.nestedScrollView.showSnack(state.message, getString(R.string.action_retry_str)) {
+                    binding.nestedScrollView.showSnack(
+                        state.message,
+                        getString(R.string.action_retry_str)
+                    ) {
                         viewModel.retry()
                     }
                 }
 
                 is ErrorNextPageState -> {
-                    binding.nestedScrollView.showSnack(state.message, getString(R.string.action_retry_str)) {
+                    binding.nestedScrollView.showSnack(
+                        state.message,
+                        getString(R.string.action_retry_str)
+                    ) {
                         viewModel.retry()
                     }
                 }
@@ -150,43 +165,43 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
 
     private fun initTags() {
         val tags = arrayListOf(
-                TagModel(
-                        tagName = "Food",
-                        imageUrl = "https://www.helpguide.org/wp-content/uploads/fast-foods-candy-cookies-pastries-768.jpg"
-                ),
-                TagModel(
-                        tagName = "Cars",
-                        imageUrl = "https://i.dawn.com/primary/2019/03/5c8da9fc3e386.jpg"
-                ),
-                TagModel(
-                        tagName = "Cities",
-                        imageUrl = "https://news.mit.edu/sites/default/files/styles/news_article__image_gallery/public/images/201306/20130603150017-0_0.jpg?itok=fU2rLfB6"
-                ),
-                TagModel(
-                        tagName = "Mountains",
-                        imageUrl = "https://www.dw.com/image/48396304_101.jpg"
-                ),
-                TagModel(
-                        tagName = "People",
-                        imageUrl = "https://cdn.lifehack.org/wp-content/uploads/2015/02/what-makes-people-happy.jpeg"
-                ),
-                TagModel(
-                        tagName = "Work",
-                        imageUrl = "https://www.plays-in-business.com/wp-content/uploads/2015/05/successful-business-meeting.jpg"
-                ),
-                TagModel(
-                        tagName = "Fashion",
-                        imageUrl = "https://www.remixmagazine.com/assets/Prada-SS21-1__ResizedImageWzg2Niw1NzZd.jpg"
-                ),
-                TagModel(
-                        tagName = "Animals",
-                        imageUrl = "https://kids.nationalgeographic.com/content/dam/kids/photos/animals/Mammals/A-G/cheetah-mom-cubs.adapt.470.1.jpg"
-                ),
-                TagModel(
-                        tagName = "Interior",
-                        imageUrl = "https://images.homify.com/c_fill,f_auto,q_0,w_740/v1495001963/p/photo/image/2013905/CAM_2_OPTION_1.jpg"
-                )
+            TagModel(
+                tagName = "Food",
+                imageUrl = "https://www.helpguide.org/wp-content/uploads/fast-foods-candy-cookies-pastries-768.jpg"
+            ),
+            TagModel(
+                tagName = "Cars",
+                imageUrl = "https://i.dawn.com/primary/2019/03/5c8da9fc3e386.jpg"
+            ),
+            TagModel(
+                tagName = "Cities",
+                imageUrl = "https://news.mit.edu/sites/default/files/styles/news_article__image_gallery/public/images/201306/20130603150017-0_0.jpg?itok=fU2rLfB6"
+            ),
+            TagModel(
+                tagName = "Mountains",
+                imageUrl = "https://www.dw.com/image/48396304_101.jpg"
+            ),
+            TagModel(
+                tagName = "People",
+                imageUrl = "https://cdn.lifehack.org/wp-content/uploads/2015/02/what-makes-people-happy.jpeg"
+            ),
+            TagModel(
+                tagName = "Work",
+                imageUrl = "https://www.plays-in-business.com/wp-content/uploads/2015/05/successful-business-meeting.jpg"
+            ),
+            TagModel(
+                tagName = "Fashion",
+                imageUrl = "https://www.remixmagazine.com/assets/Prada-SS21-1__ResizedImageWzg2Niw1NzZd.jpg"
+            ),
+            TagModel(
+                tagName = "Animals",
+                imageUrl = "https://kids.nationalgeographic.com/content/dam/kids/photos/animals/Mammals/A-G/cheetah-mom-cubs.adapt.470.1.jpg"
+            ),
+            TagModel(
+                tagName = "Interior",
+                imageUrl = "https://images.homify.com/c_fill,f_auto,q_0,w_740/v1495001963/p/photo/image/2013905/CAM_2_OPTION_1.jpg"
+            )
         )
-        tagsAdapter.updateItems(tags)
+        viewModelTags.initPhotoModel(tags)
     }
 }
