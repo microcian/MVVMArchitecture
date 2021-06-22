@@ -68,11 +68,11 @@ class PhotosViewModel @Inject constructor(
                             _photosList.postValue(dataState.data)
                         } else {
                             // Any other page
-                            _uiState.postValue(ContentNextPageState)
-                            val currentList = arrayListOf<PhotoModel>()
-                            _photosList.value?.let { currentList.addAll(it) }
-                            currentList.addAll(dataState.data)
-                            _photosList.postValue(currentList)
+//                            _uiState.postValue(ContentNextPageState)
+//                            val currentList = arrayListOf<PhotoModel>()
+//                            _photosList.value?.let { currentList.addAll(it) }
+//                            currentList.addAll(dataState.data)
+                            _photosList.postValue(dataState.data)
                         }
                     }
 
