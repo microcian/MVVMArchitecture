@@ -83,10 +83,10 @@ class PhotosViewModel @Inject constructor(
                     is DataState.Error -> {
                         if (page == 1) {
                             _uiState.postValue(ErrorState(dataState.message))
-                            photosListLiveData.postValue(dataState.listPhotos)
+                            photosListLiveData.postValue(dataState.data)
                         } else {
                             _uiState.postValue(ErrorNextPageState(dataState.message))
-                            photosListLiveData.postValue(dataState.listPhotos)
+                            photosListLiveData.postValue(dataState.data)
                         }
                     }
                 }
