@@ -16,15 +16,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PhotosViewModel @Inject constructor(
-        private val fetchPopularPhotosUseCase: FetchPopularPhotosUsecase,
-        private val searchPhotosUseCase: SearchPhotosUsecase
+    private val fetchPopularPhotosUseCase: FetchPopularPhotosUsecase,
+    private val searchPhotosUseCase: SearchPhotosUsecase
 ) : BaseViewModel() {
 
     private var _uiState = MutableLiveData<PhotosUiState>()
     var uiStateLiveData: LiveData<PhotosUiState> = _uiState
 
-    private var _photosList = MutableLiveData<List<PhotoModel>>()
-    var photosListLiveData: LiveData<List<PhotoModel>> = _photosList
+//    private var _photosList = MutableLiveData<List<PhotoModel>>()
+//    var photosListLiveData: LiveData<List<PhotoModel>> = _photosList
+
+    //    private var _photosList = MutableLiveData<List<PhotoModel>?>()
+    private var photosListLiveData: MutableLiveData<List<PhotoModel>?> =
+        MutableLiveData<List<PhotoModel>?>()
 
     private var pageNumber = 1
     private var searchQuery: String = ""
@@ -65,22 +69,24 @@ class PhotosViewModel @Inject constructor(
                         if (page == 1) {
                             // First page
                             _uiState.postValue(ContentState)
-                            _photosList.postValue(dataState.data)
+                            photosListLiveData.postValue(dataState.data)
                         } else {
                             // Any other page
 //                            _uiState.postValue(ContentNextPageState)
 //                            val currentList = arrayListOf<PhotoModel>()
 //                            _photosList.value?.let { currentList.addAll(it) }
 //                            currentList.addAll(dataState.data)
-                            _photosList.postValue(dataState.data)
+                            photosListLiveData.postValue(dataState.data)
                         }
                     }
 
                     is DataState.Error -> {
                         if (page == 1) {
                             _uiState.postValue(ErrorState(dataState.message))
+                            photosListLiveData.postValue(dataState.listPhotos)
                         } else {
                             _uiState.postValue(ErrorNextPageState(dataState.message))
+                            photosListLiveData.postValue(dataState.listPhotos)
                         }
                     }
                 }
@@ -97,14 +103,14 @@ class PhotosViewModel @Inject constructor(
                         if (page == 1) {
                             // First page
                             _uiState.postValue(ContentState)
-                            _photosList.postValue(dataState.data)
+                            photosListLiveData.postValue(dataState.data)
                         } else {
                             // Any other page
                             _uiState.postValue(ContentNextPageState)
                             val currentList = arrayListOf<PhotoModel>()
-                            _photosList.value?.let { currentList.addAll(it) }
+                            photosListLiveData.value?.let { currentList.addAll(it) }
                             currentList.addAll(dataState.data)
-                            _photosList.postValue(currentList)
+                            photosListLiveData.postValue(currentList)
                         }
                     }
 

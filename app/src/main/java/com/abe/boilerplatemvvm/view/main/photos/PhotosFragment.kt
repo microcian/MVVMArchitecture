@@ -138,6 +138,7 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
                 }
 
                 is ErrorState -> {
+                    binding.recyclerPopularPhotos.visible()
                     binding.progressPhotos.gone()
                     binding.nestedScrollView.showSnack(
                         state.message,

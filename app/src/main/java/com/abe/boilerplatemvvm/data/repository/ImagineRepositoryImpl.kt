@@ -37,15 +37,30 @@ class ImagineRepositoryImpl @Inject constructor(
                 // handle the case when the API request gets an error response.
                 // e.g. internal server error.
             }.onErrorSuspend {
-                emit(DataState.error<List<PhotoModel>>(message()))
+                emit(
+                    DataState.error(
+                        appDatabase.photoDao().getAllPhotos(),
+                        message()
+                    )
+                )
 
                 // handle the case when the API request gets an exception response.
                 // e.g. network connection error.
             }.onExceptionSuspend {
                 if (this.exception is IOException) {
-                    emit(DataState.error<List<PhotoModel>>(stringUtils.noNetworkErrorMessage()))
+                    emit(
+                        DataState.error(
+                            appDatabase.photoDao().getAllPhotos(),
+                            stringUtils.noNetworkErrorMessage()
+                        )
+                    )
                 } else {
-                    emit(DataState.error<List<PhotoModel>>(stringUtils.somethingWentWrong()))
+                    emit(
+                        DataState.error(
+                            appDatabase.photoDao().getAllPhotos(),
+                            stringUtils.somethingWentWrong()
+                        )
+                    )
                 }
             }
         }
@@ -66,15 +81,30 @@ class ImagineRepositoryImpl @Inject constructor(
                 // handle the case when the API request gets an error response.
                 // e.g. internal server error.
             }.onErrorSuspend {
-                emit(DataState.error<List<PhotoModel>>(message()))
+                emit(
+                    DataState.error(
+                        appDatabase.photoDao().getAllPhotos(),
+                        message()
+                    )
+                )
 
                 // handle the case when the API request gets an exception response.
                 // e.g. network connection error.
             }.onExceptionSuspend {
                 if (this.exception is IOException) {
-                    emit(DataState.error<List<PhotoModel>>(stringUtils.noNetworkErrorMessage()))
+                    emit(
+                        DataState.error(
+                            appDatabase.photoDao().getAllPhotos(),
+                            stringUtils.noNetworkErrorMessage()
+                        )
+                    )
                 } else {
-                    emit(DataState.error<List<PhotoModel>>(stringUtils.somethingWentWrong()))
+                    emit(
+                        DataState.error(
+                            appDatabase.photoDao().getAllPhotos(),
+                            stringUtils.somethingWentWrong()
+                        )
+                    )
                 }
             }
         }

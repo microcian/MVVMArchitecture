@@ -22,7 +22,9 @@ sealed class ApiResponse<out T> {
      * 2) ### Exception response e.g. network connection error
      */
     sealed class ApiFailureResponse<T> {
-        data class Error<T>(val response: Response<T>) : ApiResponse<T>()
+        data class Error<T>(val response: Response<T>) : ApiResponse<T>() {
+            val data: T? = response.body()
+        }
 
         data class Exception<T>(val exception: Throwable) : ApiResponse<T>() {
             val message: String? = exception.localizedMessage
