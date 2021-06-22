@@ -1,5 +1,8 @@
 package com.abe.boilerplatemvvm.data.remote
 
+import com.abe.boilerplatemvvm.model.error.ErrorModel
+import com.abe.boilerplatemvvm.model.error.Errors
+import com.google.gson.Gson
 import retrofit2.Response
 
 /**
@@ -23,7 +26,11 @@ sealed class ApiResponse<out T> {
      */
     sealed class ApiFailureResponse<T> {
         data class Error<T>(val response: Response<T>) : ApiResponse<T>() {
-            val data: T? = response.body()
+            val errorModel = response.errorBody()?.let {
+                val errors = Gson().fromJson(it.string(), Errors::class.java)
+                ErrorModel(response.code(), errors.errors[0])
+            }
+//            val data: T? = response.body()
         }
 
         data class Exception<T>(val exception: Throwable) : ApiResponse<T>() {
