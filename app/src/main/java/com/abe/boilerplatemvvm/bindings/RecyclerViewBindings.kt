@@ -7,6 +7,7 @@ import com.abe.boilerplatemvvm.adapters.TagsAdapter
 import com.abe.boilerplatemvvm.base.view.BaseAdapter
 import com.abe.boilerplatemvvm.model.photos.PhotoModel
 import com.abe.boilerplatemvvm.model.tags.TagModel
+import java.util.*
 
 @BindingAdapter("adapter")
 fun bindRecyclerViewAdapter(recyclerView: RecyclerView, adapter: BaseAdapter<*>) {
@@ -31,8 +32,10 @@ fun bindRecyclerViewAdapter(recyclerView: RecyclerView, adapter: BaseAdapter<*>)
 fun bindRecyclerTagsData(recyclerView: RecyclerView, response: List<TagModel>?) {
     response?.let {
         val adapter = recyclerView.adapter as? TagsAdapter
-        adapter?.totalCount = response.size
-        adapter?.addNewsList(response)
+        if (adapter?.totalCount == 0) {
+            adapter?.totalCount = response.size
+            adapter?.addNewsList(response)
+        }
     }
 }
 

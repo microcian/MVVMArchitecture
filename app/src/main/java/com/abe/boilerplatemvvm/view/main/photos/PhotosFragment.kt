@@ -30,16 +30,26 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
 
+    override fun getViewModel(): BaseViewModel = viewModel
+    override fun getLayoutId(): Int = R.layout.photos_fragment
+
     private val viewModelTags: TagsViewModel by viewModels()
     private val viewModel: PhotosViewModel by viewModels()
-    override fun getViewModel(): BaseViewModel = viewModel
 
     private val tagsAdapter by lazy {
         TagsAdapter { tagModel ->
             performSearch(tagModel.tagName)
         }
     }
-    lateinit var photosAdapter: PhotosAdapter
+    private val photosAdapter by lazy {
+        PhotosAdapter { photoModel ->
+            val bundle = bundleOf(KEY_PHOTO to photoModel)
+            findNavController().navigate(
+                R.id.action_homeFragment_to_photoDetailsFragment,
+                bundle
+            )
+        }
+    }
 
     override fun initFragment() {
         if (binding.lifecycleOwner == null) {
@@ -48,12 +58,10 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
                 viewModelPhotos = this@PhotosFragment.viewModel
                 viewModelTags = this@PhotosFragment.viewModelTags
                 adapterTags = tagsAdapter
-                adapterPhotos = tagsAdapter
+                adapterPhotos = photosAdapter
             }
         }
     }
-
-    override fun getLayoutId(): Int = R.layout.photos_fragment
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -65,11 +73,6 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
 
     private fun setupViews() {
         context?.let { ctx ->
-            // Tags RecyclerView
-//            tagsAdapter = TagsAdapter { tag, _ ->
-//                performSearch(tag.tagName)
-//            }
-//            tagsAdapter = TagsAdapter { tagModel -> performSearch(tagModel.tagName) }
             val flexBoxLayoutManager = FlexboxLayoutManager(ctx).apply {
                 flexWrap = FlexWrap.WRAP
                 flexDirection = FlexDirection.ROW
@@ -78,17 +81,8 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
             binding.recyclerTags.layoutManager = flexBoxLayoutManager
             binding.recyclerTags.adapter = tagsAdapter
 
-            // Photos RecyclerView
-            photosAdapter = PhotosAdapter { photo ->
-                val bundle = bundleOf(KEY_PHOTO to photo)
-                findNavController().navigate(
-                    R.id.action_homeFragment_to_photoDetailsFragment,
-                    bundle
-                )
-            }
-            photosAdapter.stateRestorationPolicy =
-                RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-            binding.recyclerPopularPhotos.adapter = photosAdapter
+//            photosAdapter.stateRestorationPolicy =
+//                RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 
             // NestedScrollView
             binding.nestedScrollView.setOnScrollChangeListener { v: NestedScrollView, _, scrollY, _, _ ->

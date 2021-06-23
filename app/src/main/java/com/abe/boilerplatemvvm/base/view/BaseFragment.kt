@@ -17,16 +17,8 @@ abstract class BaseFragment<BINDING : ViewDataBinding> : Fragment(), BaseView {
     abstract fun getViewModel(): BaseViewModel?
     abstract fun initFragment()
 
-    private var activity: BaseActivity<*>? = null
     lateinit var binding: BINDING
-
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is BaseActivity<*>) {
-            activity = context
-        }
-    }
+    private var activity: BaseActivity<*>? = null
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -63,6 +55,13 @@ abstract class BaseFragment<BINDING : ViewDataBinding> : Fragment(), BaseView {
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is BaseActivity<*>) {
+            activity = context
+        }
+    }
+
     override fun setSoftInputMode(mode: Int) {
         activity?.setSoftInputMode(mode)
     }
@@ -95,13 +94,13 @@ abstract class BaseFragment<BINDING : ViewDataBinding> : Fragment(), BaseView {
         activity?.showToast(message)
     }
 
-    fun callBackKeyHandling(function: () -> Unit) {
-        val callback: OnBackPressedCallback =
-                object : OnBackPressedCallback(true) {
-                    override fun handleOnBackPressed() {
-                        function()
-                    }
-                }
-        activity?.onBackPressedDispatcher?.addCallback(this, callback)
-    }
+//    fun callBackKeyHandling(function: () -> Unit) {
+//        val callback: OnBackPressedCallback =
+//                object : OnBackPressedCallback(true) {
+//                    override fun handleOnBackPressed() {
+//                        function()
+//                    }
+//                }
+//        activity?.onBackPressedDispatcher?.addCallback(this, callback)
+//    }
 }

@@ -8,7 +8,7 @@ import com.abe.boilerplatemvvm.databinding.PhotoItemLayoutBinding
 import com.abe.boilerplatemvvm.model.photos.PhotoModel
 
 class PhotosAdapter(
-    private val clickListener: (result: PhotoModel) -> Unit
+    private val clickListener: (photoModel: PhotoModel) -> Unit
 ) : BaseAdapter<PhotoItemLayoutBinding>() {
 
     init {

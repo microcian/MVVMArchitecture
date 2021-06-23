@@ -15,11 +15,11 @@
 
         <variable
             name="adapterTags"
-            type="com.abe.boilerplatemvvm.base.view.BaseAdapter" />
+            type="com.abe.boilerplatemvvm.adapters.TagsAdapter" />
 
         <variable
             name="adapterPhotos"
-            type="com.abe.boilerplatemvvm.base.view.BaseAdapter" />
+            type="com.abe.boilerplatemvvm.adapters.PhotosAdapter" />
     </data>
 
 
