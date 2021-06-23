@@ -1,8 +1,6 @@
 package com.abe.boilerplatemvvm.di.modules
 
 import com.abe.boilerplatemvvm.BuildConfig
-import com.abe.boilerplatemvvm.aide.utils.AppConstants.ApiEndPoints.BASE_API_URL
-import com.abe.boilerplatemvvm.aide.utils.AppConstants.ApiRequestParams.API_KEY
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.ApiRequestParams.PARAM_AUTHORIZATION
 import com.abe.boilerplatemvvm.aide.utils.StringUtils
 import com.abe.boilerplatemvvm.data.remote.ApiResponseCallAdapterFactory
@@ -38,7 +36,7 @@ class NetworkApiModule {
                 .addInterceptor { chain ->
                     val request = chain.request()
                     val newRequest =
-                            request.newBuilder().header(PARAM_AUTHORIZATION, API_KEY)
+                            request.newBuilder().header(PARAM_AUTHORIZATION, BuildConfig.API_KEY)
                     chain.proceed(newRequest.build())
                 }
                 .addInterceptor(logging)
@@ -52,7 +50,7 @@ class NetworkApiModule {
             stringUtils: StringUtils
     ): Retrofit {
         return Retrofit.Builder()
-                .baseUrl(BASE_API_URL)
+                .baseUrl(BuildConfig.BASE_URL)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(ApiResponseCallAdapterFactory(stringUtils))
