@@ -20,7 +20,7 @@ class PhotosViewModel @Inject constructor(
     private val searchPhotosUseCase: SearchPhotosUsecase
 ) : BaseViewModel() {
 
-    private var _uiState = MutableLiveData<PhotosUiState>()
+    var _uiState = MutableLiveData<PhotosUiState>()
     var uiStateLiveData: LiveData<PhotosUiState> = _uiState
 
 //    private var _photosList = MutableLiveData<List<PhotoModel>>()

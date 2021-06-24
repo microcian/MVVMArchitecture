@@ -12,6 +12,12 @@ open class BaseViewModel : ViewModel() {
     val error = MutableLiveData<String>()
     val loader = MutableLiveData<Boolean>()
 
+    fun getLoadingValue(): Boolean {
+        return loader.value?.let {
+            loader.value
+        } ?: false
+    }
+
     private fun showError(e: String) {
         error.postValue(e)
     }

@@ -85,11 +85,11 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
 //                RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 
             // NestedScrollView
-            binding.nestedScrollView.setOnScrollChangeListener { v: NestedScrollView, _, scrollY, _, _ ->
-                if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
-                    viewModel.loadMorePhotos()
-                }
-            }
+    //            binding.nestedScrollView.setOnScrollChangeListener { v: NestedScrollView, _, scrollY, _, _ ->
+//                if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+//                    viewModel.loadMorePhotos()
+//                }
+//            }
 
             // Input Text Search
             binding.inputSearchPhotos.setEndIconOnClickListener {
