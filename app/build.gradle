@@ -41,17 +41,27 @@ android {
         flavorDimensions "default"
     }
 
+    flavorDimensions 'default'
+    productFlavors {
+        Dev {
+            dimension 'default'
+            applicationIdSuffix ".dev"
+            buildConfigField "String", "BASE_URL", "\"${getProperty("local.properties", "base_url_staging")}\""
+        }
+        Prod {
+            dimension 'default'
+            buildConfigField "String", "BASE_URL", "\"${getProperty("local.properties", "base_url_live")}\""
+        }
+    }
     buildTypes {
         debug {
             testCoverageEnabled true
-            buildConfigField "String", "BASE_URL", "\"${getProperty("local.properties", "base_url_staging")}\""
             buildConfigField "String", "API_KEY", "\"${getProperty("local.properties", "api_key")}\""
         }
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_URL", "\"${getProperty("local.properties", "base_url_live")}\""
             buildConfigField "String", "API_KEY", "\"${getProperty("local.properties", "api_key")}\""
         }
     }
