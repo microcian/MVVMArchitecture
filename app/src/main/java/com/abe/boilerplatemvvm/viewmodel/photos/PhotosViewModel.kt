@@ -23,10 +23,6 @@ class PhotosViewModel @Inject constructor(
     var _uiState = MutableLiveData<PhotosUiState>()
     var uiStateLiveData: LiveData<PhotosUiState> = _uiState
 
-//    private var _photosList = MutableLiveData<List<PhotoModel>>()
-//    var photosListLiveData: LiveData<List<PhotoModel>> = _photosList
-
-    //    private var _photosList = MutableLiveData<List<PhotoModel>?>()
     private var photosListLiveData: MutableLiveData<List<PhotoModel>?> =
         MutableLiveData<List<PhotoModel>?>()
 
