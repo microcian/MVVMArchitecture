@@ -5,7 +5,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.createDataStore
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.PrefKeys.KEY_PREF_NAME
-import com.abe.boilerplatemvvm.aide.utils.DataStoreUtils.ExceptionMessages.TYPE_EXCEPTION
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -14,10 +13,7 @@ import kotlinx.coroutines.runBlocking
 import java.io.IOException
 
 object DataStoreUtils {
-
-    object ExceptionMessages {
-        const val TYPE_EXCEPTION = "This type cannot be saved into DataStore"
-    }
+    private const val TYPE_EXCEPTION = "This type cannot be saved into DataStore"
 
     private lateinit var dataStore: DataStore<Preferences>
 
