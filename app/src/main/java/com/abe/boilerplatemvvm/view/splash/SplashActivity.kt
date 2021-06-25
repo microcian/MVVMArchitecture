@@ -20,7 +20,7 @@ class SplashActivity : AppCompatActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        AppDataStore.isLogin = false
+        AppDataStore.isLogin = true
         Log.i("splash", " ".plus(AppDataStore.isLogin))
     }
 
