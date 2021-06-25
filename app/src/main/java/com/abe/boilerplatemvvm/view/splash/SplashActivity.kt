@@ -4,8 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
+import com.abe.boilerplatemvvm.data.datastore.AppDataStore
 import com.abe.boilerplatemvvm.databinding.ActivitySplashBinding
 import com.abe.boilerplatemvvm.view.main.MainActivity
 
@@ -17,6 +19,9 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        AppDataStore.isLogin = false
+        Log.i("splash", " ".plus(AppDataStore.isLogin))
     }
 
     override fun onResume() {

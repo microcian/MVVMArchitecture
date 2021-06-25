@@ -26,6 +26,9 @@ object AppConstants {
         const val KEY_DEFAULT = "default"
         const val KEY_THEME = "theme"
         const val KEY_LANG = "lang"
+        const val KEY_IS_LOGIN = "isLogin"
+        const val KEY_PREF_NAME = "AppDataStore"
+        const val KEY_DATABASE_NAME = "photos.db"
     }
 
     object BundleArgs {
