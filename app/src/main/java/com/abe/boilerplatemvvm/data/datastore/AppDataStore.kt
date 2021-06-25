@@ -6,7 +6,7 @@ import com.abe.boilerplatemvvm.aide.utils.DataStoreUtils
 class AppDataStore {
 
     companion object {
-        val dataStore = DataStoreUtils
+        private val dataStore = DataStoreUtils
 
         var isLogin: Boolean
             get() = dataStore.readBooleanData(KEY_IS_LOGIN)
