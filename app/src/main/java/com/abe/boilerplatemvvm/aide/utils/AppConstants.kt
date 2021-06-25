@@ -23,7 +23,6 @@ object AppConstants {
     }
 
     object PrefKeys {
-        const val KEY_DEFAULT = "default"
         const val KEY_THEME = "theme"
         const val KEY_LANG = "lang"
         const val KEY_IS_LOGIN = "isLogin"

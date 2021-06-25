@@ -17,11 +17,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.abe.boilerplatemvvm.R
-import com.abe.boilerplatemvvm.aide.utils.AppConstants.PrefKeys.KEY_DEFAULT
-import com.abe.boilerplatemvvm.aide.utils.AppConstants.PrefKeys.KEY_LANG
-import com.abe.boilerplatemvvm.aide.utils.AppConstants.PrefKeys.KEY_THEME
 import com.abe.boilerplatemvvm.aide.utils.DialogUtils
 import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
+import com.abe.boilerplatemvvm.data.datastore.AppDataStore
 import java.util.*
 
 @SuppressLint("Registered")
@@ -43,17 +41,8 @@ abstract class BaseActivity<BINDING : ViewDataBinding> : AppCompatActivity(), Ba
      */
     private fun getOverrideConfiguration(newBase: Context?): Configuration {
         val configuration = Configuration(newBase?.resources?.configuration)
-        val appName = applicationInfo.loadLabel(packageManager).toString()
-        val sharedPreferences = getSharedPreferences(appName, Context.MODE_PRIVATE)
-        val uiMode = sharedPreferences.getInt(
-                KEY_THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        )
-        AppCompatDelegate.setDefaultNightMode(uiMode)
-        sharedPreferences.getString(KEY_LANG, KEY_DEFAULT)?.let {
-            if (it != KEY_DEFAULT) {
-                configuration.setLocale(Locale(it))
-            }
-        }
+        AppCompatDelegate.setDefaultNightMode(AppDataStore.uiMode)
+        configuration.setLocale(Locale(AppDataStore.appLanguage))
         return configuration
     }
 
