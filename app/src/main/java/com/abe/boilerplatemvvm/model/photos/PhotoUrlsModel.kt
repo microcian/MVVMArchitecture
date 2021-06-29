@@ -1,11 +1,9 @@
 package com.abe.boilerplatemvvm.model.photos
 
 import android.os.Parcelable
-import androidx.room.Entity
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-@Entity
 data class PhotoUrlsModel(
     var raw: String,
     var full: String,

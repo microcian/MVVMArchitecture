@@ -7,7 +7,6 @@ import com.abe.boilerplatemvvm.data.remote.ApiService
 import com.abe.boilerplatemvvm.data.remote.onErrorSuspend
 import com.abe.boilerplatemvvm.data.remote.onExceptionSuspend
 import com.abe.boilerplatemvvm.data.remote.onSuccessSuspend
-import com.abe.boilerplatemvvm.database.AppDatabase
 import com.abe.boilerplatemvvm.model.photos.PhotoModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -20,8 +19,7 @@ import javax.inject.Inject
  */
 class ImagineRepositoryImpl @Inject constructor(
     private val stringUtils: StringUtils,
-    private val apiService: ApiService,
-    private val appDatabase: AppDatabase
+    private val apiService: ApiService
 ) : ImagineRepository {
 
     @WorkerThread
@@ -34,7 +32,6 @@ class ImagineRepositoryImpl @Inject constructor(
             apiService.loadPhotos(pageNumber, pageSize, orderBy).apply {
                 this.onSuccessSuspend {
                     data?.let {
-                        appDatabase.photoDao().insertPhotosList(it)
                         emit(DataState.success(it))
                     }
                 }
@@ -42,8 +39,7 @@ class ImagineRepositoryImpl @Inject constructor(
                 // e.g. internal server error.
             }.onErrorSuspend {
                 emit(
-                    DataState.error(
-                        appDatabase.photoDao().getAllPhotos(),
+                    DataState.error<List<PhotoModel>>(
                         errorModel!!.errorMessage
                     )
                 )
@@ -52,26 +48,10 @@ class ImagineRepositoryImpl @Inject constructor(
                 // e.g. network connection error.
             }.onExceptionSuspend {
                 emit(
-                    DataState.error(
-                        appDatabase.photoDao().getAllPhotos(),
+                    DataState.error<List<PhotoModel>>(
                         (this.exception as UnknownHostException).localizedMessage!!
                     )
                 )
-//                if (this.exception is IOException) {
-//                    emit(
-//                        DataState.error(
-//                            appDatabase.photoDao().getAllPhotos(),
-//                            stringUtils.noNetworkErrorMessage()
-//                        )
-//                    )
-//                } else {
-//                    emit(
-//                        DataState.error(
-//                            appDatabase.photoDao().getAllPhotos(),
-//                            stringUtils.somethingWentWrong()
-//                        )
-//                    )
-//                }
             }
         }
     }
@@ -92,8 +72,7 @@ class ImagineRepositoryImpl @Inject constructor(
                 // e.g. internal server error.
             }.onErrorSuspend {
                 emit(
-                    DataState.error(
-                        appDatabase.photoDao().getAllPhotos(),
+                    DataState.error<List<PhotoModel>>(
                         errorModel!!.errorMessage
                     )
                 )
@@ -103,15 +82,13 @@ class ImagineRepositoryImpl @Inject constructor(
             }.onExceptionSuspend {
                 if (this.exception is IOException) {
                     emit(
-                        DataState.error(
-                            appDatabase.photoDao().getAllPhotos(),
+                        DataState.error<List<PhotoModel>>(
                             stringUtils.noNetworkErrorMessage()
                         )
                     )
                 } else {
                     emit(
-                        DataState.error(
-                            appDatabase.photoDao().getAllPhotos(),
+                        DataState.error<List<PhotoModel>>(
                             stringUtils.somethingWentWrong()
                         )
                     )

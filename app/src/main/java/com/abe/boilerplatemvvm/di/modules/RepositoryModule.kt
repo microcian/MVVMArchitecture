@@ -5,7 +5,6 @@ import com.abe.boilerplatemvvm.aide.utils.StringUtils
 import com.abe.boilerplatemvvm.data.remote.ApiService
 import com.abe.boilerplatemvvm.data.repository.ImagineRepository
 import com.abe.boilerplatemvvm.data.repository.ImagineRepositoryImpl
-import com.abe.boilerplatemvvm.database.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,9 +28,8 @@ class RepositoryModule {
     @Provides
     fun provideImagineRepository(
         stringUtils: StringUtils,
-        apiService: ApiService,
-        appDatabase: AppDatabase
+        apiService: ApiService
     ): ImagineRepository {
-        return ImagineRepositoryImpl(stringUtils, apiService, appDatabase)
+        return ImagineRepositoryImpl(stringUtils, apiService)
     }
 }
