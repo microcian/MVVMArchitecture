@@ -3,14 +3,12 @@ package com.abe.boilerplatemvvm.aide.utils
 object AppConstants {
 
     object ApiEndPoints {
-        const val BASE_API_URL = "https://api.unsplash.com/"
         const val KEY_PHOTOS = "photos"
         const val KEY_SEARCH_PHOTOS = "search/photos"
     }
 
     object ApiRequestParams {
         const val PHOTOS_PER_PAGE = 30
-        const val API_KEY = "Client-ID wxl8gDYQvKHvTcfTzfFJ2Fy0GoSuKoJovMopdieYBvk"
         const val PARAM_PAGE = "page"
         const val PARAM_PER_PAGE = "per_page"
         const val PARAM_ORDER_BY = "order_by"
@@ -25,9 +23,11 @@ object AppConstants {
     }
 
     object PrefKeys {
-        const val KEY_DEFAULT = "default"
         const val KEY_THEME = "theme"
         const val KEY_LANG = "lang"
+        const val KEY_IS_LOGIN = "isLogin"
+        const val KEY_PREF_NAME = "AppDataStore"
+        const val KEY_DATABASE_NAME = "photos.db"
     }
 
     object BundleArgs {

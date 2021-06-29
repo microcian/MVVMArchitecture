@@ -7,15 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 
 @Suppress("unused", "LeakingThis")
 abstract class BaseViewHolder<BINDING : ViewDataBinding>(private val view: BINDING) :
-    RecyclerView.ViewHolder(view.root), View.OnClickListener, View.OnLongClickListener {
+    RecyclerView.ViewHolder(view.root), View.OnClickListener {
     init {
         view.root.setOnClickListener(this)
-        view.root.setOnLongClickListener(this)
     }
 
     abstract fun bindData(data: Any, position: Int)
     fun view() = view.root
     fun binding() = view
     fun context(): Context = view.root.context
-
 }

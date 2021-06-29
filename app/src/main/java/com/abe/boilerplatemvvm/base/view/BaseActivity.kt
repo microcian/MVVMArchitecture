@@ -14,44 +14,26 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.abe.boilerplatemvvm.R
-import com.abe.boilerplatemvvm.aide.utils.AppConstants.PrefKeys.KEY_DEFAULT
-import com.abe.boilerplatemvvm.aide.utils.AppConstants.PrefKeys.KEY_LANG
-import com.abe.boilerplatemvvm.aide.utils.AppConstants.PrefKeys.KEY_THEME
 import com.abe.boilerplatemvvm.aide.utils.DialogUtils
 import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
-import androidx.lifecycle.Observer
-import androidx.navigation.NavController
-import androidx.navigation.NavDirections
-import androidx.navigation.fragment.NavHostFragment
-import com.abe.boilerplatemvvm.base.stateUI.ErrorDescription
-
-import com.abe.boilerplatemvvm.base.stateUI.StateViewModel
+import com.abe.boilerplatemvvm.data.datastore.AppDataStore
 import java.util.*
 
 @SuppressLint("Registered")
 abstract class BaseActivity<BINDING : ViewDataBinding> : AppCompatActivity(), BaseView {
 
-    //    abstract val bindingInflater: (LayoutInflater) -> BINDING
     abstract fun getViewModel(): BaseViewModel?
     abstract fun hasConnectivity(connectivity: Boolean)
 
-    //    protected lateinit var binding: BINDING
-//    private var _binding: BINDING? = null
-//    protected val binding: BINDING get() = _binding!!
     lateinit var binding: BINDING
     private lateinit var dialog: Dialog
+    private var availableNetwork: Network? = null
     private var originalSoftInputMode: Int? = null
     private lateinit var inputManager: InputMethodManager
-    private var availableNetwork: Network? = null
     private lateinit var connectivityManager: ConnectivityManager
-    lateinit var navController: NavController
-
-
-//    abstract fun setBinding(layoutInflater: LayoutInflater): BINDING
 
     /**
      * @param newBase the default base context of the application
@@ -59,17 +41,8 @@ abstract class BaseActivity<BINDING : ViewDataBinding> : AppCompatActivity(), Ba
      */
     private fun getOverrideConfiguration(newBase: Context?): Configuration {
         val configuration = Configuration(newBase?.resources?.configuration)
-        val appName = applicationInfo.loadLabel(packageManager).toString()
-        val sharedPreferences = getSharedPreferences(appName, Context.MODE_PRIVATE)
-        val uiMode = sharedPreferences.getInt(
-            KEY_THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        )
-        AppCompatDelegate.setDefaultNightMode(uiMode)
-        sharedPreferences.getString(KEY_LANG, KEY_DEFAULT)?.let {
-            if (it != KEY_DEFAULT) {
-                configuration.setLocale(Locale(it))
-            }
-        }
+        AppCompatDelegate.setDefaultNightMode(AppDataStore.uiMode)
+        configuration.setLocale(Locale(AppDataStore.appLanguage))
         return configuration
     }
 
@@ -85,39 +58,22 @@ abstract class BaseActivity<BINDING : ViewDataBinding> : AppCompatActivity(), Ba
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, getLayoutId())
-//        _binding = bindingInflater(layoutInflater)
         dialog = DialogUtils.createProgressDialog(this, false)
         inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-//        getViewModel()?.let { viewModel ->
-//            viewModel.loader.observe(this, Observer {
-//                it?.let {
-//                    loaderVisibility(it)
-//                }
-//            })
-//            viewModel.error.observe(this, Observer {
-//                it?.let {
-//                    showToast(it)
-//                }
-//            })
-//        }
-        getViewModel()?.outcomeLiveData?.observe(this, Observer {
-            when (it) {
-                is StateViewModel.Loading -> {
-                    if (it.showLoader)
-                        loaderVisibility(true)
+        getViewModel()?.let { viewModel ->
+            viewModel.loader.observe(this, {
+                it?.let {
+                    loaderVisibility(it)
                 }
-                is StateViewModel.Success -> loaderVisibility(false)
-                is StateViewModel.Failure -> loaderVisibility(false)
-                is StateViewModel.NetworkError -> loaderVisibility(false)
-            }
-
-        })
-        registerNetworkCallback()
-        getNavHostId()?.let {
-            val navHostFragment = supportFragmentManager.findFragmentById(it) as NavHostFragment
-            navController = navHostFragment.navController
+            })
+            viewModel.error.observe(this, {
+                it?.let {
+                    showToast(it)
+                }
+            })
         }
+        registerNetworkCallback()
     }
 
     override fun onDestroy() {
@@ -136,7 +92,7 @@ abstract class BaseActivity<BINDING : ViewDataBinding> : AppCompatActivity(), Ba
         }
     }
 
-    override fun showKeyboard(editText: AppCompatEditText) {
+    override fun showKeyboard(editText: EditText) {
         editText.post {
             editText.requestFocus()
             inputManager.showSoftInput(editText.rootView, InputMethodManager.SHOW_FORCED)
@@ -174,29 +130,6 @@ abstract class BaseActivity<BINDING : ViewDataBinding> : AppCompatActivity(), Ba
         }
     }
 
-    override fun onApiError(errorDescription: ErrorDescription) {
-        showToast(errorDescription.message)
-
-    }
-
-    override fun navigateToDestination(direction: NavDirections) {
-        if (::navController.isInitialized) {
-            navController.navigate(direction)
-        } else {
-            throw IllegalAccessException("Nav Controller not set in activity")
-        }
-
-    }
-
-    override fun navigateToDestination(id: Int, args: Bundle) {
-        if (::navController.isInitialized) {
-            navController.navigate(id, args)
-        } else {
-            throw IllegalAccessException("Nav Controller not set in activity")
-        }
-
-    }
-
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
             super.onAvailable(network)
@@ -214,8 +147,8 @@ abstract class BaseActivity<BINDING : ViewDataBinding> : AppCompatActivity(), Ba
 
     private fun registerNetworkCallback() {
         val networkRequest = NetworkRequest.Builder()
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-            .build()
+                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                .build()
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
     }
 

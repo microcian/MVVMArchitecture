@@ -39,8 +39,8 @@ suspend fun <T> ApiResponse<T>.onExceptionSuspend(
     return this
 }
 
-/** A message from the [ApiResponse.ApiFailureResponse.Error]. */
-fun <T> ApiResponse.ApiFailureResponse.Error<T>.message(): String = toString()
-
-/** A message from the [ApiResponse.ApiFailureResponse.Exception]. */
-fun <T> ApiResponse.ApiFailureResponse.Exception<T>.message(): String = toString()
+///** A message from the [ApiResponse.ApiFailureResponse.Error]. */
+//fun <T> ApiResponse.ApiFailureResponse.Error<T>.message(): String = toString()
+//
+///** A message from the [ApiResponse.ApiFailureResponse.Exception]. */
+//fun <T> ApiResponse.ApiFailureResponse.Exception<T>.message(): String = toString()

@@ -6,19 +6,29 @@
     <data>
 
         <variable
-            name="viewModel"
+            name="viewModelTags"
+            type="com.abe.boilerplatemvvm.viewmodel.tags.TagsViewModel" />
+
+        <variable
+            name="viewModelPhotos"
             type="com.abe.boilerplatemvvm.viewmodel.photos.PhotosViewModel" />
 
         <variable
-            name="adapter"
-            type="com.abe.boilerplatemvvm.base.view.BaseAdapter" />
+            name="adapterTags"
+            type="com.abe.boilerplatemvvm.adapters.TagsAdapter" />
+
+        <variable
+            name="adapterPhotos"
+            type="com.abe.boilerplatemvvm.adapters.PhotosAdapter" />
     </data>
+
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_background"
+        app:photosPagination="@{viewModelPhotos}"
         tools:context=".view.main.photos.PhotosFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -83,10 +93,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                app:adapter="@{adapterTags}"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/cardSearchPhotos"
                 app:layout_constraintTop_toBottomOf="@+id/lblExplore"
+                app:payloadTags="@{viewModelTags.allTags}"
                 app:spanCount="4"
                 tools:itemCount="7"
                 tools:listitem="@layout/tag_item_layout" />
@@ -107,13 +119,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                app:adapter="@{adapterPhotos}"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintStart_toStartOf="@+id/cardSearchPhotos"
                 app:layout_constraintTop_toBottomOf="@+id/lblPopular"
+                app:payloadPhotos="@{viewModelPhotos.allPhotos}"
                 app:spanCount="2"
                 tools:itemCount="7"
-                app:adapter="@{adapter}"
-                app:payload="@{viewModel.allNews}"
                 tools:listitem="@layout/photo_item_layout" />
 
             <ProgressBar
@@ -121,12 +133,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@+id/cardSearchPhotos"
                 app:layout_constraintStart_toStartOf="@+id/cardSearchPhotos"
                 app:layout_constraintTop_toBottomOf="@+id/lblPopular" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.core.widget.NestedScrollView>
 </layout>
 

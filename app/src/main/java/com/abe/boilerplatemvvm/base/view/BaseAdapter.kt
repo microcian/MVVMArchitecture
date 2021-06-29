@@ -6,11 +6,10 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import java.util.ArrayList
+import java.util.*
 
 abstract class BaseAdapter<BINDING : ViewDataBinding> :
     RecyclerView.Adapter<BaseViewHolder<BINDING>>() {
-
     private val data = mutableListOf<Any>()
     var totalCount: Int = 0
 
@@ -18,7 +17,7 @@ abstract class BaseAdapter<BINDING : ViewDataBinding> :
         return data
     }
 
-    fun <T> addData(data: List<T>) {
+    fun <DATA> addData(data: List<DATA>) {
         data().addAll(ArrayList<Any>(data))
     }
 
@@ -46,7 +45,6 @@ abstract class BaseAdapter<BINDING : ViewDataBinding> :
         try {
             viewHolder.bindData(data, position)
             viewHolder.binding().executePendingBindings()
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -64,6 +62,5 @@ abstract class BaseAdapter<BINDING : ViewDataBinding> :
             viewGroup,
             false
         )
-
     }
 }

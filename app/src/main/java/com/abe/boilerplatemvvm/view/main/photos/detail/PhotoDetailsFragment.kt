@@ -1,11 +1,10 @@
 package com.abe.boilerplatemvvm.view.main.photos.detail
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import coil.load
+import com.abe.boilerplatemvvm.R
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.BundleArgs.KEY_PHOTO
 import com.abe.boilerplatemvvm.base.view.BaseFragment
 import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
@@ -17,11 +16,23 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PhotoDetailsFragment : BaseFragment<PhotoDetailsFragmentBinding>() {
 
-    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> PhotoDetailsFragmentBinding
-        get() = PhotoDetailsFragmentBinding::inflate
+//    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> PhotoDetailsFragmentBinding
+//        get() = PhotoDetailsFragmentBinding::inflate
 
     private val viewModel: PhotoDetailsViewModel by viewModels()
     override fun getViewModel(): BaseViewModel = viewModel
+
+    override fun initFragment() {
+        if (binding.lifecycleOwner == null) {
+            binding.apply {
+//                lifecycleOwner = this@NewsListFragment
+//                viewModel = this@NewsListFragment.viewModel
+//                adapter = newsAdapter
+            }
+        }
+    }
+
+    override fun getLayoutId(): Int = R.layout.photo_details_fragment
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -31,12 +42,8 @@ class PhotoDetailsFragment : BaseFragment<PhotoDetailsFragmentBinding>() {
             findNavController().popBackStack()
             return
         }
-        setUpViews()
         initObservations()
         viewModel.initPhotoModel(photo)
-    }
-
-    private fun setUpViews() {
     }
 
     private fun initObservations() {

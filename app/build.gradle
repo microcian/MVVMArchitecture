@@ -10,6 +10,7 @@ plugins {
     // used for dependency injection
     id 'dagger.hilt.android.plugin'
 }
+
 def getProperty(String filename, String propName) {
     def propsFile = rootProject.file(filename)
     if (propsFile.exists()) {
@@ -40,14 +41,28 @@ android {
         flavorDimensions "default"
     }
 
+    flavorDimensions 'default'
+    productFlavors {
+        Dev {
+            dimension 'default'
+            applicationIdSuffix ".dev"
+            buildConfigField "String", "BASE_URL", "\"${getProperty("local.properties", "base_url_staging")}\""
+        }
+        Prod {
+            dimension 'default'
+            buildConfigField "String", "BASE_URL", "\"${getProperty("local.properties", "base_url_live")}\""
+        }
+    }
     buildTypes {
         debug {
             testCoverageEnabled true
+            buildConfigField "String", "API_KEY", "\"${getProperty("local.properties", "api_key")}\""
         }
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "API_KEY", "\"${getProperty("local.properties", "api_key")}\""
         }
     }
     compileOptions {
@@ -56,6 +71,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    kapt {
+        correctErrorTypes = true
     }
     sourceSets {
         androidTest.java.srcDirs += "src/test-common/java"
@@ -67,6 +85,7 @@ android {
     }
     androidExtensions {
         features = ["parcelize"]
+        experimental = true
     }
     lintOptions {
         disable "UnsafeExperimentalUsageError", "UnsafeExperimentalUsageWarning"
@@ -76,22 +95,26 @@ android {
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "com.google.android.material:material:$material_version"
-    implementation "androidx.recyclerview:recyclerview:1.2.0-beta02"
-    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
 
-    // Architecture
+    // -------------- Architecture -------------- //
+    implementation 'androidx.core:core-ktx:1.5.0'
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    // UI - UX
+    implementation 'com.google.android:flexbox:2.0.1'
+    implementation "io.coil-kt:coil:1.1.1"
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    implementation "com.google.android.material:material:$material_version"
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
+    // LiveData - ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    // -------------- Architecture End -------------- //
 
     // Kotlin Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
@@ -106,15 +129,9 @@ dependencies {
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // Firebase
-    implementation platform('com.google.firebase:firebase-bom:26.7.0')
-
-    // Third-party
-    implementation 'com.google.android:flexbox:2.0.1'
-    implementation "io.coil-kt:coil:1.1.1"
-    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    implementation platform("com.google.firebase:firebase-bom:$firebase")
 
     // intuit: dimens for dynamic layout building
     implementation "com.intuit.sdp:sdp-android:$intuit_version"
@@ -134,4 +151,15 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     androidTestImplementation "io.mockk:mockk-android:1.10.6"
+
+    // Persistence
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha05"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
 }

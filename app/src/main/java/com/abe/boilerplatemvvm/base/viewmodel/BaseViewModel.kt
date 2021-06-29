@@ -1,49 +1,46 @@
 package com.abe.boilerplatemvvm.base.viewmodel
 
-import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.abe.boilerplatemvvm.base.stateUI.StateViewModel
-import kotlinx.coroutines.Job
+import retrofit2.HttpException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
+import java.util.concurrent.TimeoutException
 
-abstract class BaseViewModel : ViewModel() {
+open class BaseViewModel : ViewModel() {
 
-    companion  object {
-        var job = Job()
+    val error = MutableLiveData<String>()
+    val loader = MutableLiveData<Boolean>()
+
+    fun getLoadingValue(): Boolean {
+        return loader.value?.let {
+            loader.value
+        } ?: false
     }
-    var outcomeLiveData = MediatorLiveData<StateViewModel<*>>()
 
-    // Cancel the job when the view model is destroyed
-    override fun onCleared() {
-        super.onCleared()
-        job.cancel()
+    private fun showError(e: String) {
+        error.postValue(e)
     }
 
-//    val error = MutableLiveData<String>()
-//    val loader = MutableLiveData<Boolean>()
-//
-//    private fun showError(e: String) {
-//        error.postValue(e)
-//    }
+    fun showLoader(show: Boolean) {
+        loader.postValue(show)
+    }
 
-//    fun showLoader(show: Boolean) {
-//        loader.postValue(show)
-//    }
-
-//    fun handleException(exception: Exception) {
-//        showLoader(false)
-//        when (exception) {
-//            is TimeoutException, is SocketTimeoutException -> {
-//                showError(exception.toString())
-//            }
-//            is UnknownHostException -> {
-//                showError(exception.toString())
-//            }
-//            is HttpException -> {
-//                showError(exception.toString())
-//            }
-//            else -> {
-//                showError(exception.toString())
-//            }
-//        }
-//    }
+    fun handleException(exception: Exception) {
+        showLoader(false)
+        when (exception) {
+            is TimeoutException, is SocketTimeoutException -> {
+                showError(exception.toString())
+            }
+            is UnknownHostException -> {
+                showError(exception.toString())
+            }
+            is HttpException -> {
+                showError(exception.toString())
+            }
+            else -> {
+                showError(exception.toString())
+            }
+        }
+    }
 }

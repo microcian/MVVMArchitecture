@@ -1,4 +1,4 @@
-package com.abe.boilerplatemvvm.aide.utils
+package com.xammy.mvvmarchitecture.util
 
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager

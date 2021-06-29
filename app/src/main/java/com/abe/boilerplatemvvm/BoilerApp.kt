@@ -2,6 +2,7 @@ package com.abe.boilerplatemvvm
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.abe.boilerplatemvvm.aide.utils.DataStoreUtils
 import com.abe.boilerplatemvvm.aide.utils.isNight
 import dagger.hilt.android.HiltAndroidApp
 
@@ -11,6 +12,7 @@ class BoilerApp : Application() {
     override fun onCreate() {
         super.onCreate()
         setupDayNightMode()
+        DataStoreUtils.init(this)
     }
 
     private fun setupDayNightMode() {
