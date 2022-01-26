@@ -13,10 +13,10 @@
         android:supportsRtl="true"
         android:name=".BoilerApp"
         android:theme="@style/Theme.BoilerPlateMVVM">
-        <activity android:name=".view.splash.SplashActivity">
+        <activity android:name=".view.splash.SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
