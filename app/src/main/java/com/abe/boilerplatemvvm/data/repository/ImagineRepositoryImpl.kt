@@ -7,8 +7,8 @@ import com.abe.boilerplatemvvm.data.remote.ApiService
 import com.abe.boilerplatemvvm.data.remote.onErrorSuspend
 import com.abe.boilerplatemvvm.data.remote.onExceptionSuspend
 import com.abe.boilerplatemvvm.data.remote.onSuccessSuspend
-import com.abe.boilerplatemvvm.database.AppDatabase
-import com.abe.boilerplatemvvm.model.photos.PhotoModel
+import com.nextbridge.roomdb.database.AppDatabase
+import com.nextbridge.roomdb.entities.PhotoEntityDB
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.IOException
@@ -29,7 +29,7 @@ class ImagineRepositoryImpl @Inject constructor(
         pageNumber: Int,
         pageSize: Int,
         orderBy: String
-    ): Flow<DataState<List<PhotoModel>>> {
+    ): Flow<DataState<List<PhotoEntityDB>?>> {
         return flow {
             apiService.loadPhotos(pageNumber, pageSize, orderBy).apply {
                 this.onSuccessSuspend {
@@ -80,7 +80,7 @@ class ImagineRepositoryImpl @Inject constructor(
         query: String,
         pageNumber: Int,
         pageSize: Int
-    ): Flow<DataState<List<PhotoModel>>> {
+    ): Flow<DataState<List<PhotoEntityDB>?>> {
         return flow {
             apiService.searchPhotos(query, pageNumber, pageSize).apply {
                 this.onSuccessSuspend {

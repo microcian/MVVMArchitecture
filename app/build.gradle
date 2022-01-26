@@ -94,13 +94,9 @@ android {
 
 dependencies {
 
-    // -------------- Architecture -------------- //
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     // UI - UX
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
-    implementation "com.google.android.material:material:$material_version"
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
     // LiveData - ViewModel
@@ -117,7 +113,6 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     // Retrofit
-    implementation "com.google.code.gson:gson:$gson_version"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
@@ -131,13 +126,15 @@ dependencies {
     implementation "com.intuit.ssp:ssp-android:$intuit_version"
 
     // Persistence
-    implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+//    implementation "androidx.room:room-runtime:$room_version"
+//    annotationProcessor "androidx.room:room-compiler:$room_version"
+//    kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.datastore:datastore-preferences:1.0.0-alpha05"
 
     // Glide alternate way Fresco, Coil, Picasso
     implementation "com.github.bumptech.glide:glide:$glide_version"
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"
+
+    implementation project(':roomdb')
 }

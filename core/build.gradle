@@ -1,0 +1,40 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    compileSdkVersion rootProject.compile_sdk_version
+
+    defaultConfig {
+        minSdkVersion rootProject.min_sdk_version
+        targetSdkVersion rootProject.target_sdk_version
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    api "androidx.core:core-ktx:$ktx_version"
+    // -------------- Architecture -------------- //
+    api "androidx.appcompat:appcompat:$appcompat_version"
+    api "androidx.legacy:legacy-support-v4:$legacy_version"
+    api "com.google.android.material:material:$material_version"
+    // Retrofit
+    api "com.google.code.gson:gson:$gson_version"
+}

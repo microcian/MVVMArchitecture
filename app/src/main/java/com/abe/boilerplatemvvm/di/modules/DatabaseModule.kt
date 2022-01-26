@@ -3,8 +3,8 @@ package com.abe.boilerplatemvvm.di.modules
 import android.app.Application
 import androidx.room.Room
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.PrefKeys.KEY_DATABASE_NAME
-import com.abe.boilerplatemvvm.database.AppDatabase
-import com.abe.boilerplatemvvm.database.PhotoDao
+import com.nextbridge.roomdb.database.AppDatabase
+import com.nextbridge.roomdb.database.PhotoDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

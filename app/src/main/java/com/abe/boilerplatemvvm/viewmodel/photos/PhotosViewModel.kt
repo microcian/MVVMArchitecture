@@ -7,8 +7,8 @@ import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
 import com.abe.boilerplatemvvm.data.DataState
 import com.abe.boilerplatemvvm.data.usecases.FetchPopularPhotosUsecase
 import com.abe.boilerplatemvvm.data.usecases.SearchPhotosUsecase
-import com.abe.boilerplatemvvm.model.photos.PhotoModel
 import com.abe.boilerplatemvvm.view.main.photos.*
+import com.nextbridge.roomdb.entities.PhotoEntityDB
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -23,8 +23,8 @@ class PhotosViewModel @Inject constructor(
     var _uiState = MutableLiveData<PhotosUiState>()
     var uiStateLiveData: LiveData<PhotosUiState> = _uiState
 
-    private var photosListLiveData: MutableLiveData<List<PhotoModel>?> =
-        MutableLiveData<List<PhotoModel>?>()
+    private var photosListLiveData: MutableLiveData<List<PhotoEntityDB>?> =
+        MutableLiveData<List<PhotoEntityDB>?>()
 
     private var pageNumber = 1
     private var searchQuery: String = ""
@@ -103,10 +103,12 @@ class PhotosViewModel @Inject constructor(
                         } else {
                             // Any other page
                             _uiState.postValue(ContentNextPageState)
-                            val currentList = arrayListOf<PhotoModel>()
+                            val currentList = arrayListOf<PhotoEntityDB>()
                             photosListLiveData.value?.let { currentList.addAll(it) }
-                            currentList.addAll(dataState.data)
-                            photosListLiveData.postValue(currentList)
+                            dataState.data?.let {
+                                currentList.addAll(it)
+                                photosListLiveData.postValue(currentList)
+                            }
                         }
                     }
 

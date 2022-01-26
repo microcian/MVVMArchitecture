@@ -5,7 +5,7 @@ import com.abe.boilerplatemvvm.aide.utils.StringUtils
 import com.abe.boilerplatemvvm.data.remote.ApiService
 import com.abe.boilerplatemvvm.data.repository.ImagineRepository
 import com.abe.boilerplatemvvm.data.repository.ImagineRepositoryImpl
-import com.abe.boilerplatemvvm.database.AppDatabase
+import com.nextbridge.roomdb.database.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

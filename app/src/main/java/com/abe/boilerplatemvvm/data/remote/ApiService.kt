@@ -7,7 +7,7 @@ import com.abe.boilerplatemvvm.aide.utils.AppConstants.ApiRequestParams.PARAM_PA
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.ApiRequestParams.PARAM_PER_PAGE
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.ApiRequestParams.PARAM_QUERY
 import com.abe.boilerplatemvvm.data.remote.response.search.SearchPhotosResponse
-import com.abe.boilerplatemvvm.model.photos.PhotoModel
+import com.nextbridge.roomdb.entities.PhotoEntityDB
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -18,7 +18,7 @@ interface ApiService {
         @Query(PARAM_PAGE) page: Int = 1,
         @Query(PARAM_PER_PAGE) numOfPhotos: Int = 10,
         @Query(PARAM_ORDER_BY) orderBy: String = "popular"
-    ): ApiResponse<List<PhotoModel>>
+    ): ApiResponse<List<PhotoEntityDB>>
 
     @GET(KEY_SEARCH_PHOTOS)
     suspend fun searchPhotos(

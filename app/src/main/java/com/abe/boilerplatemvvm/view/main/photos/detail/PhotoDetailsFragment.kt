@@ -9,8 +9,8 @@ import com.abe.boilerplatemvvm.base.view.BaseFragment
 import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
 import com.abe.boilerplatemvvm.bindings.loadImageWithGlide
 import com.abe.boilerplatemvvm.databinding.PhotoDetailsFragmentBinding
-import com.abe.boilerplatemvvm.model.photos.PhotoModel
 import com.abe.boilerplatemvvm.viewmodel.photos.detail.PhotoDetailsViewModel
+import com.nextbridge.roomdb.entities.PhotoEntityDB
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,7 +37,7 @@ class PhotoDetailsFragment : BaseFragment<PhotoDetailsFragmentBinding>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val photo = arguments?.getParcelable<PhotoModel>(KEY_PHOTO)
+        val photo = arguments?.getParcelable<PhotoEntityDB>(KEY_PHOTO)
         if (photo == null) {
             findNavController().popBackStack()
             return
@@ -48,7 +48,11 @@ class PhotoDetailsFragment : BaseFragment<PhotoDetailsFragmentBinding>() {
 
     private fun initObservations() {
         viewModel.photoModelLiveData.observe(viewLifecycleOwner) { photo ->
-            loadImageWithGlide(binding.photoView, photo.urls.full)
+            photo.urls?.run {
+                full?.let {
+                    loadImageWithGlide(binding.photoView, it)
+                }
+            }
         }
     }
 }

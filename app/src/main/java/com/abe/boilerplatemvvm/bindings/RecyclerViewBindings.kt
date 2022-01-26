@@ -7,10 +7,9 @@ import com.abe.boilerplatemvvm.adapters.PhotosAdapter
 import com.abe.boilerplatemvvm.adapters.TagsAdapter
 import com.abe.boilerplatemvvm.aide.utils.NestedScrollViewListener
 import com.abe.boilerplatemvvm.base.view.BaseAdapter
-import com.abe.boilerplatemvvm.model.photos.PhotoModel
 import com.abe.boilerplatemvvm.model.tags.TagModel
 import com.abe.boilerplatemvvm.viewmodel.photos.PhotosViewModel
-import java.util.*
+import com.nextbridge.roomdb.entities.PhotoEntityDB
 
 @BindingAdapter("adapter")
 fun bindRecyclerViewAdapter(recyclerView: RecyclerView, adapter: BaseAdapter<*>) {
@@ -56,7 +55,7 @@ fun bindRecyclerTagsData(recyclerView: RecyclerView, response: List<TagModel>?) 
 }
 
 @BindingAdapter("payloadPhotos")
-fun bindRecyclerPhotosData(recyclerView: RecyclerView, response: List<PhotoModel>?) {
+fun bindRecyclerPhotosData(recyclerView: RecyclerView, response: List<PhotoEntityDB>?) {
     response?.let {
         val adapter = recyclerView.adapter as? PhotosAdapter
         adapter?.totalCount = response.size

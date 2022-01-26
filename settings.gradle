@@ -11,3 +11,5 @@ dependencyResolutionManagement {
 }
 include ':app'
 rootProject.name = "BoilerPlateMVVM"
+include ':core'
+include ':roomdb'
