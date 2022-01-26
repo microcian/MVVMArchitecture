@@ -3,11 +3,11 @@ package com.abe.boilerplatemvvm.view.main.photos.detail
 import android.os.Bundle
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import coil.load
 import com.abe.boilerplatemvvm.R
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.BundleArgs.KEY_PHOTO
 import com.abe.boilerplatemvvm.base.view.BaseFragment
 import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
+import com.abe.boilerplatemvvm.bindings.loadImageWithGlide
 import com.abe.boilerplatemvvm.databinding.PhotoDetailsFragmentBinding
 import com.abe.boilerplatemvvm.model.photos.PhotoModel
 import com.abe.boilerplatemvvm.viewmodel.photos.detail.PhotoDetailsViewModel
@@ -48,7 +48,7 @@ class PhotoDetailsFragment : BaseFragment<PhotoDetailsFragmentBinding>() {
 
     private fun initObservations() {
         viewModel.photoModelLiveData.observe(viewLifecycleOwner) { photo ->
-            binding.photoView.load(photo.urls.full)
+            loadImageWithGlide(binding.photoView, photo.urls.full)
         }
     }
 }
