@@ -66,7 +66,7 @@ class PhotosViewModel @Inject constructor(
                     }
                     is DataState.Error -> {
                         showError()
-                        uiState.postValue(ErrorState(dataState.message))
+                        uiState.postValue(ErrorState(dataState.errorModel.message))
                         photosListLiveData.postValue(dataState.data)
                     }
                 }
@@ -97,7 +97,7 @@ class PhotosViewModel @Inject constructor(
 
                     is DataState.Error -> {
                         showError()
-                        uiState.postValue(ErrorState(dataState.message))
+                        uiState.postValue(ErrorState(dataState.errorModel.message))
                     }
                 }
             }

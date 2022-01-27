@@ -24,13 +24,15 @@ sealed class ApiResponse<out T> {
      * 1) ### Error response e.g. server error
      * 2) ### Exception response e.g. network connection error
      */
-    sealed class ApiFailureResponse<T> {
+    sealed class ApiFailureResponse {
         data class Error<T>(val response: Response<T>) : ApiResponse<T>() {
             val errorModel = response.errorBody()?.let {
                 val errors = Gson().fromJson(it.string(), Errors::class.java)
-                ErrorModel(response.code(), errors.errors[0])
+                ErrorModel(
+                    statusCode = response.code(),
+                    message = errors.errors[0]
+                )
             }
-//            val data: T? = response.body()
         }
 
         data class Exception<T>(val exception: Throwable) : ApiResponse<T>() {
@@ -66,11 +68,8 @@ sealed class ApiResponse<out T> {
             successCodeRange: IntRange = 200..299,
             response: Response<T>
         ): ApiResponse<T> = try {
-            if (response.raw().code in successCodeRange) {
-                ApiSuccessResponse(response)
-            } else {
-                ApiFailureResponse.Error(response)
-            }
+            if (response.raw().code in successCodeRange) ApiSuccessResponse(response)
+            else ApiFailureResponse.Error(response)
         } catch (ex: Exception) {
             ApiFailureResponse.Exception(ex)
         }
