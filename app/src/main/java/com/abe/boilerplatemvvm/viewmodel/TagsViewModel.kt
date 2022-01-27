@@ -1,4 +1,4 @@
-package com.abe.boilerplatemvvm.viewmodel.tags
+package com.abe.boilerplatemvvm.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

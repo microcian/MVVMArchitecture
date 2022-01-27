@@ -7,7 +7,7 @@
 
         <variable
             name="viewModelTags"
-            type="com.abe.boilerplatemvvm.viewmodel.tags.TagsViewModel" />
+            type="com.abe.boilerplatemvvm.viewmodel.TagsViewModel" />
 
         <variable
             name="viewModelPhotos"

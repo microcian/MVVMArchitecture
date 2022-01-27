@@ -16,7 +16,7 @@ import com.abe.boilerplatemvvm.base.BaseViewModel
 import com.abe.boilerplatemvvm.databinding.PhotosFragmentBinding
 import com.abe.boilerplatemvvm.model.tags.TagModel
 import com.abe.boilerplatemvvm.viewmodel.PhotosViewModel
-import com.abe.boilerplatemvvm.viewmodel.tags.TagsViewModel
+import com.abe.boilerplatemvvm.viewmodel.TagsViewModel
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap

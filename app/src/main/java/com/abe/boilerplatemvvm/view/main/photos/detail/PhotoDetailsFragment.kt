@@ -9,7 +9,7 @@ import com.abe.boilerplatemvvm.base.BaseFragment
 import com.abe.boilerplatemvvm.base.BaseViewModel
 import com.abe.boilerplatemvvm.bindings.loadImageWithGlide
 import com.abe.boilerplatemvvm.databinding.PhotoDetailsFragmentBinding
-import com.abe.boilerplatemvvm.viewmodel.photos.detail.PhotoDetailsViewModel
+import com.abe.boilerplatemvvm.viewmodel.PhotoDetailsViewModel
 import com.nextbridge.roomdb.entities.PhotoEntityDB
 import dagger.hilt.android.AndroidEntryPoint
 
