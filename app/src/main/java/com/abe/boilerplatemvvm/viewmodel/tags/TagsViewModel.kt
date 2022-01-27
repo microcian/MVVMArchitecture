@@ -2,7 +2,7 @@ package com.abe.boilerplatemvvm.viewmodel.tags
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
+import com.abe.boilerplatemvvm.base.BaseViewModel
 import com.abe.boilerplatemvvm.model.tags.TagModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

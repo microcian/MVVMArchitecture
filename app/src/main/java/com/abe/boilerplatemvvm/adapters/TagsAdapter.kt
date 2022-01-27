@@ -2,8 +2,8 @@ package com.abe.boilerplatemvvm.adapters
 
 import com.abe.boilerplatemvvm.R
 import com.abe.boilerplatemvvm.adapters.viewHolders.TagsViewHolder
-import com.abe.boilerplatemvvm.base.view.BaseAdapter
-import com.abe.boilerplatemvvm.base.view.BaseViewHolder
+import com.abe.boilerplatemvvm.base.BaseAdapter
+import com.abe.boilerplatemvvm.base.BaseViewHolder
 import com.abe.boilerplatemvvm.databinding.TagItemLayoutBinding
 import com.abe.boilerplatemvvm.model.tags.TagModel
 

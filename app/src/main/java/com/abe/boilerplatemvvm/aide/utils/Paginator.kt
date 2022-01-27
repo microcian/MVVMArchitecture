@@ -3,7 +3,7 @@ package com.xammy.mvvmarchitecture.util
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abe.boilerplatemvvm.base.view.BaseAdapter
+import com.abe.boilerplatemvvm.base.BaseAdapter
 
 class Paginator(
     recyclerView: RecyclerView,

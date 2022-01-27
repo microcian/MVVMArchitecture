@@ -3,23 +3,19 @@ package com.abe.boilerplatemvvm.view.main.photos
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import androidx.core.os.bundleOf
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.abe.boilerplatemvvm.R
 import com.abe.boilerplatemvvm.adapters.PhotosAdapter
 import com.abe.boilerplatemvvm.adapters.TagsAdapter
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.BundleArgs.KEY_PHOTO
 import com.abe.boilerplatemvvm.aide.utils.dismissKeyboard
-import com.abe.boilerplatemvvm.aide.utils.gone
 import com.abe.boilerplatemvvm.aide.utils.showSnack
-import com.abe.boilerplatemvvm.aide.utils.visible
-import com.abe.boilerplatemvvm.base.view.BaseFragment
-import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
+import com.abe.boilerplatemvvm.base.BaseFragment
+import com.abe.boilerplatemvvm.base.BaseViewModel
 import com.abe.boilerplatemvvm.databinding.PhotosFragmentBinding
 import com.abe.boilerplatemvvm.model.tags.TagModel
-import com.abe.boilerplatemvvm.viewmodel.photos.PhotosViewModel
+import com.abe.boilerplatemvvm.viewmodel.PhotosViewModel
 import com.abe.boilerplatemvvm.viewmodel.tags.TagsViewModel
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
@@ -108,25 +104,9 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
     }
 
     private fun initObservations() {
-        viewModel.uiStateLiveData.observe(viewLifecycleOwner) { state ->
+        viewModel.uiState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is LoadingState -> {
-                    binding.recyclerPopularPhotos.gone()
-                    binding.progressPhotos.visible()
-                }
-
-                is LoadingNextPageState -> {
-                    showToast(getString(R.string.message_load_photos_str))
-                }
-
-                is ContentState -> {
-                    binding.recyclerPopularPhotos.visible()
-                    binding.progressPhotos.gone()
-                }
-
                 is ErrorState -> {
-                    binding.recyclerPopularPhotos.visible()
-                    binding.progressPhotos.gone()
                     binding.nestedScrollView.showSnack(
                         state.message,
                         getString(R.string.action_retry_str)
@@ -134,17 +114,6 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
                         viewModel.retry()
                     }
                 }
-
-                is ErrorNextPageState -> {
-                    binding.nestedScrollView.showSnack(
-                        state.message,
-                        getString(R.string.action_retry_str)
-                    ) {
-                        viewModel.retry()
-                    }
-                }
-                ContentNextPageState -> TODO()
-                EmptyState -> TODO()
             }
         }
     }

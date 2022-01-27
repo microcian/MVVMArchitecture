@@ -1,4 +1,4 @@
-package com.abe.boilerplatemvvm.base.view
+package com.abe.boilerplatemvvm.base
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -18,7 +18,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.abe.boilerplatemvvm.R
 import com.abe.boilerplatemvvm.aide.utils.DialogUtils
-import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
 import com.abe.boilerplatemvvm.data.datastore.AppDataStore
 import java.util.*
 
@@ -31,9 +30,10 @@ abstract class BaseActivity<BINDING : ViewDataBinding> : AppCompatActivity(), Ba
     lateinit var binding: BINDING
     private lateinit var dialog: Dialog
     private var availableNetwork: Network? = null
-    private var originalSoftInputMode: Int? = null
     private lateinit var inputManager: InputMethodManager
     private lateinit var connectivityManager: ConnectivityManager
+
+    private var originalSoftInputMode: Int? = null
 
     /**
      * @param newBase the default base context of the application
@@ -61,19 +61,20 @@ abstract class BaseActivity<BINDING : ViewDataBinding> : AppCompatActivity(), Ba
         dialog = DialogUtils.createProgressDialog(this, false)
         inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        getViewModel()?.let { viewModel ->
-            viewModel.loader.observe(this, {
-                it?.let {
-                    loaderVisibility(it)
-                }
-            })
-            viewModel.error.observe(this, {
-                it?.let {
-                    showToast(it)
-                }
-            })
-        }
+        liveDataObservations()
         registerNetworkCallback()
+    }
+
+    private fun liveDataObservations() {
+        getViewModel()?.let { viewModel ->
+            viewModel.baseUiState.observe(this) { state ->
+                when (state) {
+                    is LoadingState -> loaderVisibility(true)
+                    is ErrorState -> loaderVisibility(false)
+                    else -> loaderVisibility(false)
+                }
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -147,8 +148,8 @@ abstract class BaseActivity<BINDING : ViewDataBinding> : AppCompatActivity(), Ba
 
     private fun registerNetworkCallback() {
         val networkRequest = NetworkRequest.Builder()
-                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-                .build()
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            .build()
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
     }
 

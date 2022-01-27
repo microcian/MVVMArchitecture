@@ -1,4 +1,4 @@
-package com.abe.boilerplatemvvm.base.view
+package com.abe.boilerplatemvvm.base
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,27 +6,19 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import java.util.*
 
 abstract class BaseAdapter<BINDING : ViewDataBinding> :
     RecyclerView.Adapter<BaseViewHolder<BINDING>>() {
+
     private val data = mutableListOf<Any>()
     var totalCount: Int = 0
 
-    fun data(): MutableList<Any> {
-        return data
-    }
-
-    fun <DATA> addData(data: List<DATA>) {
-        data().addAll(ArrayList<Any>(data))
-    }
+    protected abstract fun layout(position: Int): Int
 
     protected abstract fun viewHolder(
         @LayoutRes layout: Int,
         binding: BINDING
     ): BaseViewHolder<BINDING>
-
-    protected abstract fun layout(position: Int): Int
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -52,6 +44,14 @@ abstract class BaseAdapter<BINDING : ViewDataBinding> :
 
     override fun getItemViewType(position: Int): Int {
         return layout(position)
+    }
+
+    fun data(): MutableList<Any> {
+        return data
+    }
+
+    fun <DATA> addData(data: List<DATA>) {
+        data().addAll(java.util.ArrayList<Any>(data))
     }
 
     private fun inflateView(viewGroup: ViewGroup, @LayoutRes viewType: Int): BINDING {

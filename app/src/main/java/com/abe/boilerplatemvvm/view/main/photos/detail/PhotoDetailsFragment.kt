@@ -5,8 +5,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.abe.boilerplatemvvm.R
 import com.abe.boilerplatemvvm.aide.utils.AppConstants.BundleArgs.KEY_PHOTO
-import com.abe.boilerplatemvvm.base.view.BaseFragment
-import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
+import com.abe.boilerplatemvvm.base.BaseFragment
+import com.abe.boilerplatemvvm.base.BaseViewModel
 import com.abe.boilerplatemvvm.bindings.loadImageWithGlide
 import com.abe.boilerplatemvvm.databinding.PhotoDetailsFragmentBinding
 import com.abe.boilerplatemvvm.viewmodel.photos.detail.PhotoDetailsViewModel

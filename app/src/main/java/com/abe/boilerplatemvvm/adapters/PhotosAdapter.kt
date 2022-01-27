@@ -2,8 +2,8 @@ package com.abe.boilerplatemvvm.adapters
 
 import com.abe.boilerplatemvvm.R
 import com.abe.boilerplatemvvm.adapters.viewHolders.PhotosViewHolder
-import com.abe.boilerplatemvvm.base.view.BaseAdapter
-import com.abe.boilerplatemvvm.base.view.BaseViewHolder
+import com.abe.boilerplatemvvm.base.BaseAdapter
+import com.abe.boilerplatemvvm.base.BaseViewHolder
 import com.abe.boilerplatemvvm.databinding.PhotoItemLayoutBinding
 import com.nextbridge.roomdb.entities.PhotoEntityDB
 

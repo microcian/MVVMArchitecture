@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.abe.boilerplatemvvm.adapters.PhotosAdapter
 import com.abe.boilerplatemvvm.adapters.TagsAdapter
 import com.abe.boilerplatemvvm.aide.utils.NestedScrollViewListener
-import com.abe.boilerplatemvvm.base.view.BaseAdapter
+import com.abe.boilerplatemvvm.base.BaseAdapter
 import com.abe.boilerplatemvvm.model.tags.TagModel
-import com.abe.boilerplatemvvm.viewmodel.photos.PhotosViewModel
+import com.abe.boilerplatemvvm.viewmodel.PhotosViewModel
 import com.nextbridge.roomdb.entities.PhotoEntityDB
 
 @BindingAdapter("adapter")
@@ -17,25 +17,12 @@ fun bindRecyclerViewAdapter(recyclerView: RecyclerView, adapter: BaseAdapter<*>)
 
 }
 
-//@BindingAdapter("photosPagination")
-//fun bindPhotoPagination(recyclerView: RecyclerView, photosViewModel: PhotosViewModel) {
-//    Paginator(
-//        recyclerView,
-//        isLoading = {
-//            return@Paginator !photosViewModel.getLoadingValue()
-//        },
-//        loadMore = { photosViewModel.loadMorePhotos() }
-//    ).run {
-//        currentPage = 1
-//    }
-//}
-
 @BindingAdapter("photosPagination")
 fun bindPhotoPagination(nestedScrollView: NestedScrollView, photosViewModel: PhotosViewModel) {
     NestedScrollViewListener(
         nestedScrollView,
         isLoading = {
-            return@NestedScrollViewListener !photosViewModel.getLoadingValue()
+            return@NestedScrollViewListener !photosViewModel.inLoadingState
         },
         loadMore = { photosViewModel.loadMorePhotos() }
     ).run {
@@ -48,8 +35,8 @@ fun bindRecyclerTagsData(recyclerView: RecyclerView, response: List<TagModel>?) 
     response?.let {
         val adapter = recyclerView.adapter as? TagsAdapter
         if (adapter?.totalCount == 0) {
-            adapter?.totalCount = response.size
-            adapter?.addNewsList(response)
+            adapter.totalCount = response.size
+            adapter.addNewsList(response)
         }
     }
 }

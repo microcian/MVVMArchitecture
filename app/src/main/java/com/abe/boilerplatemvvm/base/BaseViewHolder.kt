@@ -1,4 +1,4 @@
-package com.abe.boilerplatemvvm.base.view
+package com.abe.boilerplatemvvm.base
 
 import android.content.Context
 import android.view.View

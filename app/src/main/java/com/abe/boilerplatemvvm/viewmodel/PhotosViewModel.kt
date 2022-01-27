@@ -1,13 +1,13 @@
-package com.abe.boilerplatemvvm.viewmodel.photos
+package com.abe.boilerplatemvvm.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
+import com.abe.boilerplatemvvm.base.BaseViewModel
 import com.abe.boilerplatemvvm.data.DataState
 import com.abe.boilerplatemvvm.data.usecases.FetchPopularPhotosUsecase
 import com.abe.boilerplatemvvm.data.usecases.SearchPhotosUsecase
-import com.abe.boilerplatemvvm.view.main.photos.*
+import com.abe.boilerplatemvvm.view.main.photos.ErrorState
+import com.abe.boilerplatemvvm.view.main.photos.PhotosUiState
 import com.nextbridge.roomdb.entities.PhotoEntityDB
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -20,8 +20,7 @@ class PhotosViewModel @Inject constructor(
     private val searchPhotosUseCase: SearchPhotosUsecase
 ) : BaseViewModel() {
 
-    var _uiState = MutableLiveData<PhotosUiState>()
-    var uiStateLiveData: LiveData<PhotosUiState> = _uiState
+    var uiState = MutableLiveData<PhotosUiState>()
 
     private var photosListLiveData: MutableLiveData<List<PhotoEntityDB>?> =
         MutableLiveData<List<PhotoEntityDB>?>()
@@ -57,33 +56,18 @@ class PhotosViewModel @Inject constructor(
     }
 
     fun fetchPhotos(page: Int) {
-        _uiState.postValue(if (page == 1) LoadingState else LoadingNextPageState)
+        showLoaderPagination(page)
         viewModelScope.launch {
             fetchPopularPhotosUseCase(page).collect { dataState ->
                 when (dataState) {
                     is DataState.Success -> {
-                        if (page == 1) {
-                            // First page
-                            _uiState.postValue(ContentState)
-                            photosListLiveData.postValue(dataState.data)
-                        } else {
-                            // Any other page
-//                            _uiState.postValue(ContentNextPageState)
-//                            val currentList = arrayListOf<PhotoModel>()
-//                            _photosList.value?.let { currentList.addAll(it) }
-//                            currentList.addAll(dataState.data)
-                            photosListLiveData.postValue(dataState.data)
-                        }
+                        hideLoader()
+                        photosListLiveData.postValue(dataState.data)
                     }
-
                     is DataState.Error -> {
-                        if (page == 1) {
-                            _uiState.postValue(ErrorState(dataState.message))
-                            photosListLiveData.postValue(dataState.data)
-                        } else {
-                            _uiState.postValue(ErrorNextPageState(dataState.message))
-                            photosListLiveData.postValue(dataState.data)
-                        }
+                        showError()
+                        uiState.postValue(ErrorState(dataState.message))
+                        photosListLiveData.postValue(dataState.data)
                     }
                 }
             }
@@ -91,18 +75,17 @@ class PhotosViewModel @Inject constructor(
     }
 
     private fun searchPhotos(query: String, page: Int) {
-        _uiState.postValue(if (page == 1) LoadingState else LoadingNextPageState)
+        showLoaderPagination(page)
         viewModelScope.launch {
             searchPhotosUseCase(query, page).collect { dataState ->
                 when (dataState) {
                     is DataState.Success -> {
+                        hideLoader()
                         if (page == 1) {
                             // First page
-                            _uiState.postValue(ContentState)
                             photosListLiveData.postValue(dataState.data)
                         } else {
                             // Any other page
-                            _uiState.postValue(ContentNextPageState)
                             val currentList = arrayListOf<PhotoEntityDB>()
                             photosListLiveData.value?.let { currentList.addAll(it) }
                             dataState.data?.let {
@@ -113,11 +96,8 @@ class PhotosViewModel @Inject constructor(
                     }
 
                     is DataState.Error -> {
-                        if (page == 1) {
-                            _uiState.postValue(ErrorState(dataState.message))
-                        } else {
-                            _uiState.postValue(ErrorNextPageState(dataState.message))
-                        }
+                        showError()
+                        uiState.postValue(ErrorState(dataState.message))
                     }
                 }
             }

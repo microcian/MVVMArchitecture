@@ -1,4 +1,4 @@
-package com.abe.boilerplatemvvm.base.view
+package com.abe.boilerplatemvvm.base
 
 import android.content.Context
 import android.os.Bundle
@@ -6,11 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
+import com.abe.boilerplatemvvm.R
 
 abstract class BaseFragment<BINDING : ViewDataBinding> : Fragment(), BaseView {
 
@@ -21,16 +20,16 @@ abstract class BaseFragment<BINDING : ViewDataBinding> : Fragment(), BaseView {
     private var activity: BaseActivity<*>? = null
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
         return if (!this::binding.isInitialized) {
             DataBindingUtil.inflate<BINDING>(
-                    inflater,
-                    getLayoutId(),
-                    container, false
+                inflater,
+                getLayoutId(),
+                container, false
             ).apply {
                 binding = this
                 initFragment()
@@ -38,20 +37,22 @@ abstract class BaseFragment<BINDING : ViewDataBinding> : Fragment(), BaseView {
         } else binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         hideKeyboard()
+        liveDataObservations()
+    }
+
+    private fun liveDataObservations() {
         getViewModel()?.let { viewModel ->
-            viewModel.loader.observe(viewLifecycleOwner, {
-                it?.let {
-                    loaderVisibility(it)
+            viewModel.baseUiState.observe(viewLifecycleOwner) { state ->
+                when (state) {
+                    is LoadingState -> loaderVisibility(true)
+                    is LoadingNextPageState -> showToast(getString(R.string.message_load_photos_str))
+                    is ErrorState -> loaderVisibility(false)
+                    else -> loaderVisibility(false)
                 }
-            })
-            viewModel.error.observe(viewLifecycleOwner, {
-                it?.let {
-                    showToast(it)
-                }
-            })
+            }
         }
     }
 
@@ -93,14 +94,4 @@ abstract class BaseFragment<BINDING : ViewDataBinding> : Fragment(), BaseView {
     override fun showToast(message: String?) {
         activity?.showToast(message)
     }
-
-//    fun callBackKeyHandling(function: () -> Unit) {
-//        val callback: OnBackPressedCallback =
-//                object : OnBackPressedCallback(true) {
-//                    override fun handleOnBackPressed() {
-//                        function()
-//                    }
-//                }
-//        activity?.onBackPressedDispatcher?.addCallback(this, callback)
-//    }
 }

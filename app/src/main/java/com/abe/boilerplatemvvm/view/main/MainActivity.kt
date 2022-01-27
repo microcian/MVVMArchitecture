@@ -9,8 +9,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.abe.boilerplatemvvm.R
-import com.abe.boilerplatemvvm.base.view.BaseActivity
-import com.abe.boilerplatemvvm.base.viewmodel.BaseViewModel
+import com.abe.boilerplatemvvm.base.BaseActivity
+import com.abe.boilerplatemvvm.base.BaseViewModel
 import com.abe.boilerplatemvvm.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 

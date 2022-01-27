@@ -1,7 +1,7 @@
 package com.abe.boilerplatemvvm.adapters.viewHolders
 
 import android.view.View
-import com.abe.boilerplatemvvm.base.view.BaseViewHolder
+import com.abe.boilerplatemvvm.base.BaseViewHolder
 import com.abe.boilerplatemvvm.databinding.TagItemLayoutBinding
 import com.abe.boilerplatemvvm.model.tags.TagModel
 
