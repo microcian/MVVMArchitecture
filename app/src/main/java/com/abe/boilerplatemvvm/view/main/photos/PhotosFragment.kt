@@ -1,6 +1,7 @@
 package com.abe.boilerplatemvvm.view.main.photos
 
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -59,9 +60,8 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupViews()
         initTags()
         initObservations()
@@ -76,9 +76,6 @@ class PhotosFragment : BaseFragment<PhotosFragmentBinding>() {
             }
             binding.recyclerTags.layoutManager = flexBoxLayoutManager
             binding.recyclerTags.adapter = tagsAdapter
-
-//            photosAdapter.stateRestorationPolicy =
-//                RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 
             // Input Text Search
             binding.inputSearchPhotos.setEndIconOnClickListener {
