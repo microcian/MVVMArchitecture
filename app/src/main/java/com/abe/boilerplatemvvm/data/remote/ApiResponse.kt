@@ -36,7 +36,12 @@ sealed class ApiResponse<out T> {
         }
 
         data class Exception<T>(val exception: Throwable) : ApiResponse<T>() {
-            val message: String? = exception.localizedMessage
+            fun errorModel(): ErrorModel {
+                exception.localizedMessage?.let {
+                    return ErrorModel(message = it)
+                }
+                return ErrorModel()
+            }
         }
     }
 
@@ -54,7 +59,7 @@ sealed class ApiResponse<out T> {
          *
          * [ApiFailureResponse] factory function.
          */
-        fun <T> error(response: Response<T>) = ApiFailureResponse.Error<T>(response)
+        fun <T> error(response: Response<T>) = ApiFailureResponse.Error(response)
 
         /**
          * ApiResponse Factory.

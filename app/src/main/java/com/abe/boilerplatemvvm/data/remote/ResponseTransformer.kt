@@ -7,9 +7,7 @@ package com.abe.boilerplatemvvm.data.remote
 suspend fun <T> ApiResponse<T>.onSuccessSuspend(
     onResult: suspend ApiResponse.ApiSuccessResponse<T>.() -> Unit
 ): ApiResponse<T> {
-    if (this is ApiResponse.ApiSuccessResponse) {
-        onResult(this)
-    }
+    if (this is ApiResponse.ApiSuccessResponse) onResult(this)
     return this
 }
 
@@ -20,9 +18,7 @@ suspend fun <T> ApiResponse<T>.onSuccessSuspend(
 suspend fun <T> ApiResponse<T>.onErrorSuspend(
     onResult: suspend ApiResponse.ApiFailureResponse.Error<T>.() -> Unit
 ): ApiResponse<T> {
-    if (this is ApiResponse.ApiFailureResponse.Error) {
-        onResult(this)
-    }
+    if (this is ApiResponse.ApiFailureResponse.Error) onResult(this)
     return this
 }
 
@@ -33,14 +29,6 @@ suspend fun <T> ApiResponse<T>.onErrorSuspend(
 suspend fun <T> ApiResponse<T>.onExceptionSuspend(
     onResult: suspend ApiResponse.ApiFailureResponse.Exception<T>.() -> Unit
 ): ApiResponse<T> {
-    if (this is ApiResponse.ApiFailureResponse.Exception) {
-        onResult(this)
-    }
+    if (this is ApiResponse.ApiFailureResponse.Exception) onResult(this)
     return this
 }
-
-///** A message from the [ApiResponse.ApiFailureResponse.Error]. */
-//fun <T> ApiResponse.ApiFailureResponse.Error<T>.message(): String = toString()
-//
-///** A message from the [ApiResponse.ApiFailureResponse.Exception]. */
-//fun <T> ApiResponse.ApiFailureResponse.Exception<T>.message(): String = toString()

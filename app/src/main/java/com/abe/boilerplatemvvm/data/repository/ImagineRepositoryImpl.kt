@@ -36,8 +36,6 @@ class ImagineRepositoryImpl @Inject constructor(
                         emit(DataState.success(it))
                     }
                 }
-                // handle the case when the API request gets an error response.
-                // e.g. internal server error.
             }.onErrorSuspend {
                 emit(
                     DataState.error(
@@ -49,12 +47,12 @@ class ImagineRepositoryImpl @Inject constructor(
                 // handle the case when the API request gets an exception response.
                 // e.g. network connection error.
             }.onExceptionSuspend {
-//                emit(
-//                    DataState.error(
-//                        appDatabase.photoDao().getAllPhotos(),
-//                        (this.exception as UnknownHostException).localizedMessage!!
-//                    )
-//                )
+                emit(
+                    DataState.error(
+                        appDatabase.photoDao().getAllPhotos(),
+                        errorModel()
+                    )
+                )
             }
         }
     }
@@ -80,25 +78,13 @@ class ImagineRepositoryImpl @Inject constructor(
                         errorModel!!
                     )
                 )
-
-                // handle the case when the API request gets an exception response.
-                // e.g. network connection error.
             }.onExceptionSuspend {
-//                if (this.exception is IOException) {
-//                    emit(
-//                        DataState.error(
-//                            appDatabase.photoDao().getAllPhotos(),
-//                            stringUtils.noNetworkErrorMessage()
-//                        )
-//                    )
-//                } else {
-//                    emit(
-//                        DataState.error(
-//                            appDatabase.photoDao().getAllPhotos(),
-//                            stringUtils.somethingWentWrong()
-//                        )
-//                    )
-//                }
+                emit(
+                    DataState.error(
+                        appDatabase.photoDao().getAllPhotos(),
+                        errorModel()
+                    )
+                )
             }
         }
     }

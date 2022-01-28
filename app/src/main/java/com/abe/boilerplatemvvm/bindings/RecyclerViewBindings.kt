@@ -12,15 +12,15 @@ import com.abe.boilerplatemvvm.viewmodel.PhotosViewModel
 import com.nextbridge.roomdb.entities.PhotoEntityDB
 
 @BindingAdapter("adapter")
-fun bindRecyclerViewAdapter(recyclerView: RecyclerView, adapter: BaseAdapter<*>) {
-    recyclerView.adapter = recyclerView.adapter ?: adapter
+fun RecyclerView.bindRecyclerViewAdapter(adapter: BaseAdapter<*>) {
+    this.adapter = this.adapter ?: adapter
 
 }
 
 @BindingAdapter("photosPagination")
-fun bindPhotoPagination(nestedScrollView: NestedScrollView, photosViewModel: PhotosViewModel) {
+fun NestedScrollView.bindPhotoPagination(photosViewModel: PhotosViewModel) {
     NestedScrollViewListener(
-        nestedScrollView,
+        this,
         isLoading = {
             return@NestedScrollViewListener !photosViewModel.inLoadingState
         },
@@ -31,9 +31,9 @@ fun bindPhotoPagination(nestedScrollView: NestedScrollView, photosViewModel: Pho
 }
 
 @BindingAdapter("payloadTags")
-fun bindRecyclerTagsData(recyclerView: RecyclerView, response: List<TagModel>?) {
+fun RecyclerView.bindRecyclerTagsData(response: List<TagModel>?) {
     response?.let {
-        val adapter = recyclerView.adapter as? TagsAdapter
+        val adapter = this.adapter as? TagsAdapter
         if (adapter?.totalCount == 0) {
             adapter.totalCount = response.size
             adapter.addNewsList(response)
@@ -42,9 +42,9 @@ fun bindRecyclerTagsData(recyclerView: RecyclerView, response: List<TagModel>?) 
 }
 
 @BindingAdapter("payloadPhotos")
-fun bindRecyclerPhotosData(recyclerView: RecyclerView, response: List<PhotoEntityDB>?) {
+fun RecyclerView.bindRecyclerPhotosData(response: List<PhotoEntityDB>?) {
     response?.let {
-        val adapter = recyclerView.adapter as? PhotosAdapter
+        val adapter = this.adapter as? PhotosAdapter
         adapter?.totalCount = response.size
         adapter?.addPhotosList(response)
     }
